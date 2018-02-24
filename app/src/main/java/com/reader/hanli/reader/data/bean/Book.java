@@ -1,20 +1,47 @@
 package com.reader.hanli.reader.data.bean;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hanli on 2018/2/11.
  */
 
 public class Book {
-
+    /**
+     * 封面
+     */
     private String coverUri;
 
+    /**
+     * 书名
+     */
     private String name;
 
+    /**
+     * 描述
+     */
     private String description;
 
+    /**
+     * 作者
+     */
     private String author;
+
+    /**
+     * 最后更新时间
+     */
+    private String latestTime;
+
+    /**
+     * 最新章节
+     */
+    private String latestChapter;
+
+    /**
+     * 对应的引擎name和链接
+     */
+    private Map.Entry<String , String> bookUrl;
 
     private List<Chapter> chapters;
 
@@ -58,6 +85,30 @@ public class Book {
         this.chapters = chapters;
     }
 
+    public String getLatestTime() {
+        return latestTime;
+    }
+
+    public void setLatestTime(String latestTime) {
+        this.latestTime = latestTime;
+    }
+
+    public String getLatestChapter() {
+        return latestChapter;
+    }
+
+    public void setLatestChapter(String latestChapter) {
+        this.latestChapter = latestChapter;
+    }
+
+    public Map.Entry<String, String> getBookUrl() {
+        return bookUrl;
+    }
+
+    public void setBookUrl(Map.Entry<String, String> bookUrl) {
+        this.bookUrl = bookUrl;
+    }
+
     public static class Chapter{
 
         private String id;
@@ -65,6 +116,11 @@ public class Book {
         private String name;
 
         private String content;
+
+        /**
+         * 对应的引擎name和链接
+         */
+        private Map.Entry<String , String> bookUrl;
 
         public String getId() {
             return id;
@@ -89,6 +145,27 @@ public class Book {
         public void setContent(String content) {
             this.content = content;
         }
+
+        public Map.Entry<String, String> getBookUrl() {
+            return bookUrl;
+        }
+
+        public void setBookUrl(Map.Entry<String, String> bookUrl) {
+            this.bookUrl = bookUrl;
+        }
     }
 
+    @Override
+    public String toString() {
+        return "Book{" +
+                "coverUri='" + coverUri + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", author='" + author + '\'' +
+                ", latestTime='" + latestTime + '\'' +
+                ", latestChapter='" + latestChapter + '\'' +
+                ", bookUrl=" + bookUrl +
+                ", chapters=" + chapters +
+                '}';
+    }
 }

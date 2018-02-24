@@ -87,6 +87,9 @@ public class BookshelfFragment extends BaseFragment implements BookshelfContract
         ptr.refreshComplete();
     }
 
+    /**
+     * 初始化列表item侧滑菜单
+     */
     private void initSwipeMenu() {
         SwipeMenuCreator creator = new SwipeMenuCreator() {
 

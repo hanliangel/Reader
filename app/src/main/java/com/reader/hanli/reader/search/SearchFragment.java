@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.blankj.utilcode.util.FragmentUtils;
 import com.blankj.utilcode.util.ObjectUtils;
@@ -17,6 +18,11 @@ import com.reader.hanli.baselibrary.base.BaseFragment;
 import com.reader.hanli.reader.MainActivity;
 import com.reader.hanli.reader.R;
 import com.reader.hanli.reader.R2;
+import com.reader.hanli.reader.bookshelf.BookListAdapter;
+import com.reader.hanli.reader.data.bean.Book;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +39,11 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
     @BindView(R2.id.tool_bar)
     Toolbar mToolbar;
 
+    @BindView(R2.id.lv)
+    ListView lv;
+
+    private BookListAdapter mAdapter;
+
     private SearchContract.Presenter mPresenter;
 
     @Override
@@ -46,10 +57,11 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
         View view = inflater.inflate(R.layout.fragment_search , null);
         ButterKnife.bind(this , view);
 
-        mSearchView.setSuggestions(new String[]{"abc" , "bbb" , "aaa" , "aaadddddffff" , "哟哟哟"});
+        mAdapter = new BookListAdapter(getContext() , new ArrayList<Book>());
         mSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                mPresenter.search(query);
                 return false;
             }
 
@@ -75,6 +87,7 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
             setHasOptionsMenu(true);
             mActivity.setSupportActionBar(mToolbar);
         }
+        lv.setAdapter(mAdapter);
         return view;
     }
 
@@ -89,6 +102,11 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
     public void onResume() {
         super.onResume();
         mPresenter.start();
+    }
+
+    @Override
+    public void showResult(List<Book> list) {
+        mAdapter.setData(list);
     }
 
     @Override

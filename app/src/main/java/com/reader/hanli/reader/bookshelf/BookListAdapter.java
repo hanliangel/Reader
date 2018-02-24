@@ -34,6 +34,7 @@ public class BookListAdapter extends BaseAdapter<Book, BookListAdapter.Holder> {
         Book book = getItemBean(position);
         holder.tv_name.setText(book.getName());
         holder.tv_description.setText(book.getDescription());
+        holder.tv_author.setText(book.getAuthor());
         Glide.with(mContext)
                 .load(book.getCoverUri())
                 .into(holder.iv_book_cover);
@@ -48,13 +49,16 @@ public class BookListAdapter extends BaseAdapter<Book, BookListAdapter.Holder> {
     public class Holder extends BaseHolder {
 
         @BindView(R2.id.iv_book_cover)
-        public ImageView iv_book_cover;
+        ImageView iv_book_cover;
 
         @BindView(R2.id.tv_name)
-        public TextView tv_name;
+        TextView tv_name;
 
         @BindView(R2.id.tv_description)
-        public TextView tv_description;
+        TextView tv_description;
+
+        @BindView(R2.id.tv_author)
+        TextView tv_author;
 
         public Holder(View itemView , Book book) {
             super(itemView);
