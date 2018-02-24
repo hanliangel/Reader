@@ -1,23 +1,29 @@
 package com.reader.hanli.reader.search;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.FragmentUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ObjectUtils;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.reader.hanli.baselibrary.base.BaseFragment;
 import com.reader.hanli.reader.MainActivity;
 import com.reader.hanli.reader.R;
 import com.reader.hanli.reader.R2;
+import com.reader.hanli.reader.bookdetail.BookDetailActivity;
 import com.reader.hanli.reader.bookshelf.BookListAdapter;
 import com.reader.hanli.reader.data.bean.Book;
 
@@ -88,6 +94,15 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
             mActivity.setSupportActionBar(mToolbar);
         }
         lv.setAdapter(mAdapter);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Book book = (Book) parent.getItemAtPosition(position);
+                LogUtils.iTag("engine" , "点击的book：" + book);
+                BookDetailActivity.startActivity(getContext() , book);
+            }
+        });
         return view;
     }
 

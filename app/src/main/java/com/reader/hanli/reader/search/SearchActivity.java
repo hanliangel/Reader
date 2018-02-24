@@ -12,8 +12,6 @@ public class SearchActivity extends BaseActivity {
 
     private SearchFragment mSearchFragment;
 
-    private SearchPresenter mSearchPresenter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,7 +23,7 @@ public class SearchActivity extends BaseActivity {
             FragmentUtils.add(getSupportFragmentManager() , mSearchFragment , R.id.fl_content);
         }
 
-        mSearchPresenter = new SearchPresenter(mSearchFragment);
+        new SearchPresenter(mSearchFragment);
     }
 
     @Override

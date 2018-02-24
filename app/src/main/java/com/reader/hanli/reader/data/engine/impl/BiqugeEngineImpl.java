@@ -24,7 +24,7 @@ import java.util.function.Consumer;
  * Created by hanli on 2018/2/11.
  */
 
-public class BiqugeEngineImpl implements BookEngine {
+public class BiqugeEngineImpl extends BaseEngineImpl {
 
     private static final String SEARCH_URL = "http://zhannei.baidu.com/cse/search?s=920895234054625192&q=";
 
@@ -41,16 +41,7 @@ public class BiqugeEngineImpl implements BookEngine {
         List<Book> list = new ArrayList<>();
         search = EncodeUtils.urlDecode(search);
         try {
-            Document document = Jsoup.connect(SEARCH_URL + search)
-                    //需要加上userAgent才能伪装成浏览器而不会被网站屏蔽IP
-                    //(这种做法可能也会被某些网站拉黑IP一段时间，由于不太稳定到底是不是代码的问题，还在测试中...)
-                    .userAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36")
-                    //加上cookie信息
-                    .cookie("auth", "token")
-                    //设置超时
-                    .timeout(30000)
-                    //用get()方式请求网址，也可以post()方式
-                    .get();
+            Document document = getDocument(SEARCH_URL + search);
             Elements result_list = document.getElementsByClass("result-list");
             if(ObjectUtils.isEmpty(result_list)){
                 return list;
@@ -102,7 +93,7 @@ public class BiqugeEngineImpl implements BookEngine {
                             break;
                     }
                 }
-                Log.i("engine" , book.toString());
+                LogUtils.iTag("engine" , book.toString());
                 list.add(book);
             }
         } catch (Exception e) {
@@ -113,11 +104,51 @@ public class BiqugeEngineImpl implements BookEngine {
 
     @Override
     public Book initBookChapters(Book book) {
-        return null;
+        if(ObjectUtils.isNotEmpty(book.getBookUrl())){
+            try{
+                Document document = getDocument(book.getBookUrl().getValue());
+                Element list = document.getElementById("list");
+                Elements chapter_list = list.child(0).children();
+                // 这个网站，章节列表中会有两个dt，第一个表示最新章节部分开始，第二个表示正文部分开始
+                int dt_num = 0;
+                List<Book.Chapter> chapters = new ArrayList<>();
+                int chapterId = 0;
+                for(Element element : chapter_list){
+                    if(element.nodeName().equals("dt")){
+                        dt_num ++;
+                    }else if(dt_num >= 2){
+                        // 正文部分开始
+                        Book.Chapter chapter = new Book.Chapter();
+                        Element chapter_element = element.child(0);
+                        String chapterUrl = chapter_element.attr("href");
+                        String chapterName = chapter_element.text();
+                        chapter.setName(chapterName);
+                        chapter.setChapterUrl(new AbstractMap.SimpleEntry<String, String>(ENGINE_NAME , book.getBookUrl().getValue() + chapterUrl));
+                        chapter.setId(chapterId);
+                        chapterId ++ ;
+                        chapters.add(chapter);
+                    }
+                }
+                book.setChapters(chapters);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return book;
     }
 
     @Override
     public Book.Chapter initChapter(Book.Chapter chapter) {
-        return null;
+        if(ObjectUtils.isNotEmpty(chapter)){
+            try{
+                Document document = getDocument(chapter.getChapterUrl().getValue());
+                Element content_element = document.getElementById("content");
+                String content = content_element.text();
+                chapter.setContent(content);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return chapter;
     }
 }

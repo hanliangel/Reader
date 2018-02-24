@@ -1,5 +1,6 @@
 package com.reader.hanli.reader.data.bean;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -7,7 +8,7 @@ import java.util.Map;
  * Created by hanli on 2018/2/11.
  */
 
-public class Book {
+public class Book implements Serializable{
     /**
      * 封面
      */
@@ -109,9 +110,9 @@ public class Book {
         this.bookUrl = bookUrl;
     }
 
-    public static class Chapter{
+    public static class Chapter implements Serializable{
 
-        private String id;
+        private int id;
 
         private String name;
 
@@ -120,13 +121,13 @@ public class Book {
         /**
          * 对应的引擎name和链接
          */
-        private Map.Entry<String , String> bookUrl;
+        private Map.Entry<String , String> chapterUrl;
 
-        public String getId() {
+        public int getId() {
             return id;
         }
 
-        public void setId(String id) {
+        public void setId(int id) {
             this.id = id;
         }
 
@@ -146,12 +147,12 @@ public class Book {
             this.content = content;
         }
 
-        public Map.Entry<String, String> getBookUrl() {
-            return bookUrl;
+        public Map.Entry<String, String> getChapterUrl() {
+            return chapterUrl;
         }
 
-        public void setBookUrl(Map.Entry<String, String> bookUrl) {
-            this.bookUrl = bookUrl;
+        public void setChapterUrl(Map.Entry<String, String> chapterUrl) {
+            this.chapterUrl = chapterUrl;
         }
     }
 
