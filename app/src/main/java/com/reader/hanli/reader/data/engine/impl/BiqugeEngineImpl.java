@@ -143,7 +143,8 @@ public class BiqugeEngineImpl extends BaseEngineImpl {
             try{
                 Document document = getDocument(chapter.getChapterUrl().getValue());
                 Element content_element = document.getElementById("content");
-                String content = content_element.text();
+                String content = getContentFromHtml(content_element.html());
+                LogUtils.iTag("engine" , content);
                 chapter.setContent(content);
             }catch (Exception e){
                 e.printStackTrace();

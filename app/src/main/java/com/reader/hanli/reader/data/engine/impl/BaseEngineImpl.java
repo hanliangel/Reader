@@ -26,4 +26,16 @@ public abstract class BaseEngineImpl implements BookEngine {
                 .get();
         return document;
     }
+
+    /**
+     * 从获得的包含各种html标签的内容中获得格式化好的内容
+     * @param rawContent
+     * @return
+     */
+    protected String getContentFromHtml(String rawContent){
+        rawContent = rawContent.replaceAll("<br>" , "");
+        rawContent = rawContent.replaceAll("&nbsp;" , "");
+        rawContent = rawContent.replaceAll("<.*>.*</[\\w-\\W-]*>", "");
+        return rawContent;
+    }
 }

@@ -66,7 +66,7 @@ public class ReadFragment extends BaseFragment implements ReadContract.View {
     @Override
     public void showContent(String content) {
         tv_content.setText(content);
-
+        sv.fullScroll(ScrollView.FOCUS_UP);
     }
 
     @Override

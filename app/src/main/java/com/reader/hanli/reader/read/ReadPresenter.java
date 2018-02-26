@@ -42,12 +42,12 @@ public class ReadPresenter implements ReadContract.Presenter {
 
     @Override
     public void nextChapter() {
-        switchChapter(mCurrentChapterId ++);
+        switchChapter(mCurrentChapterId + 1);
     }
 
     @Override
     public void lastChapter() {
-        switchChapter(mCurrentChapterId --);
+        switchChapter(mCurrentChapterId - 1);
     }
 
     private void switchChapter(int chapterId){
@@ -74,7 +74,7 @@ public class ReadPresenter implements ReadContract.Presenter {
 
             }
         });
-        loadChapter(chapterId ++).subscribe(new Consumer<Book.Chapter>() {
+        loadChapter(chapterId + 1).subscribe(new Consumer<Book.Chapter>() {
             @Override
             public void accept(Book.Chapter chapter) throws Exception {
 
