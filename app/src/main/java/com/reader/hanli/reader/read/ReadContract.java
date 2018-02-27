@@ -17,6 +17,10 @@ public interface ReadContract {
 
     interface View extends BaseView<Presenter>{
         void showContent(String content);
+
+        void showLoading();
+
+        void dismissLoading();
     }
 
 }

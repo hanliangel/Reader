@@ -9,9 +9,11 @@ import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.reader.hanli.baselibrary.base.BaseFragment;
 import com.reader.hanli.reader.R;
 import com.reader.hanli.reader.R2;
+import com.victor.loading.book.BookLoading;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +37,9 @@ public class ReadFragment extends BaseFragment implements ReadContract.View {
 
     @BindView(R2.id.bt_next)
     Button bt_next;
+
+    @BindView(R2.id.book_loading)
+    BookLoading book_loading;
 
     @Override
     public void setPresenter(ReadContract.Presenter presenter) {
@@ -66,7 +71,28 @@ public class ReadFragment extends BaseFragment implements ReadContract.View {
     @Override
     public void showContent(String content) {
         tv_content.setText(content);
-        sv.fullScroll(ScrollView.FOCUS_UP);
+        sv.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                sv.fullScroll(ScrollView.FOCUS_UP);
+            }
+        } , 100);
+    }
+
+    @Override
+    public void showLoading() {
+        LogUtils.iTag("read" , "showLoading");
+        book_loading.setVisibility(View.VISIBLE);
+        book_loading.start();
+    }
+
+    @Override
+    public void dismissLoading() {
+        LogUtils.iTag("read" , "dismissLoading");
+        if(book_loading.isStart()){
+            book_loading.stop();
+        }
+        book_loading.setVisibility(View.GONE);
     }
 
     @Override

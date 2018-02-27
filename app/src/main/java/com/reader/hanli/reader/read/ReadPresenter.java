@@ -2,6 +2,7 @@ package com.reader.hanli.reader.read;
 
 import android.text.TextUtils;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ObjectUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.reader.hanli.reader.data.bean.Book;
@@ -28,7 +29,9 @@ public class ReadPresenter implements ReadContract.Presenter {
 
     private int mCurrentChapterId;
 
-    public ReadPresenter(ReadContract.View mView, Book mBook , int chapterId) {
+    private boolean mHasStart;
+
+    public ReadPresenter(ReadContract.View mView, Book mBook, int chapterId) {
         this.mView = mView;
         this.mBook = mBook;
         this.mCurrentChapterId = chapterId;
@@ -37,7 +40,11 @@ public class ReadPresenter implements ReadContract.Presenter {
 
     @Override
     public void start() {
+        if(mHasStart){
+            return ;
+        }
         switchChapter(mCurrentChapterId);
+        mHasStart = true;
     }
 
     @Override
@@ -50,7 +57,7 @@ public class ReadPresenter implements ReadContract.Presenter {
         switchChapter(mCurrentChapterId - 1);
     }
 
-    private void switchChapter(int chapterId){
+    private void switchChapter(int chapterId) {
         final int finalChapterId = chapterId;
         loadChapter(chapterId).subscribe(new Observer<Book.Chapter>() {
             @Override
@@ -62,6 +69,7 @@ public class ReadPresenter implements ReadContract.Presenter {
             public void onNext(Book.Chapter chapter) {
                 mCurrentChapterId = finalChapterId;
                 mView.showContent(chapter.getContent());
+                mView.dismissLoading();
             }
 
             @Override
@@ -71,7 +79,9 @@ public class ReadPresenter implements ReadContract.Presenter {
 
             @Override
             public void onComplete() {
-
+                // cache未读取到内容，开始网络读取
+                LogUtils.iTag("read" , "加载内容onComplete 执行");
+                mView.showLoading();
             }
         });
         loadChapter(chapterId + 1).subscribe(new Consumer<Book.Chapter>() {
@@ -82,26 +92,36 @@ public class ReadPresenter implements ReadContract.Presenter {
         });
     }
 
-    private Observable<Book.Chapter> loadChapter(final int chapterId){
-        return Observable.create(new ObservableOnSubscribe<Book.Chapter>() {
+    private Observable<Book.Chapter> loadChapter(final int chapterId) {
+
+        Observable<Book.Chapter> cacheData = Observable.create(new ObservableOnSubscribe<Book.Chapter>() {
+            @Override
+            public void subscribe(ObservableEmitter<Book.Chapter> e) throws Exception {
+                e.onComplete();
+            }
+        });
+
+        Observable<Book.Chapter> networkData = Observable.create(new ObservableOnSubscribe<Book.Chapter>() {
             @Override
             public void subscribe(ObservableEmitter<Book.Chapter> e) throws Exception {
                 Book.Chapter chapter = getChapter(chapterId);
-                if(ObjectUtils.isNotEmpty(chapter)){
-                    if(TextUtils.isEmpty(chapter.getContent())){
+                if (ObjectUtils.isNotEmpty(chapter)) {
+                    if (TextUtils.isEmpty(chapter.getContent())) {
                         chapter = EngineHelper.getInstance().getBookEngine().initChapter(chapter);
                     }
                     e.onNext(chapter);
-                }else {
+                } else {
                     e.onError(new Throwable("没有下一个章了"));
                 }
             }
-        }).subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread());
+        });
+        return Observable.concat(cacheData , networkData)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private Book.Chapter getChapter(int chapterId){
-        if(chapterId >= mBook.getChapters().size() || chapterId < 0){
+    private Book.Chapter getChapter(int chapterId) {
+        if (chapterId >= mBook.getChapters().size() || chapterId < 0) {
             return null;
         }
         return mBook.getChapters().get(chapterId);

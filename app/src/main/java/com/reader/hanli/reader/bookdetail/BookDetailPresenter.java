@@ -26,6 +26,8 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
 
     private BookDetailContract.View mView;
 
+    private boolean mHasStart;
+
     public BookDetailPresenter(Book mBook, BookDetailContract.View mView) {
         this.mBook = mBook;
         this.mView = mView;
@@ -34,6 +36,7 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
 
     @Override
     public Book getBookDetail() {
+        mView.showLoading();
         Observable.create(new ObservableOnSubscribe<Book>() {
             @Override
             public void subscribe(ObservableEmitter<Book> e) throws Exception {
@@ -43,6 +46,7 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
                 }else{
                     e.onError(new Throwable("book is null"));
                 }
+                e.onComplete();
             }
         }).subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
@@ -64,7 +68,7 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
 
             @Override
             public void onComplete() {
-
+                mView.dismissLoading();
             }
         });
         return mBook;
@@ -77,6 +81,10 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
 
     @Override
     public void start() {
+        if(mHasStart){
+            return ;
+        }
         getBookDetail();
+        mHasStart = true;
     }
 }

@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <!--<android.support.v7.widget.Toolbar-->
-        <!--android:id="@+id/tool_bar"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
+    <!--android:id="@+id/tool_bar"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content">-->
 
     <!--</android.support.v7.widget.Toolbar>-->
 
     <com.github.ksoichiro.android.observablescrollview.ObservableListView
         android:id="@+id/lv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="80dp">
 
     </com.github.ksoichiro.android.observablescrollview.ObservableListView>
+
+    <com.victor.loading.book.BookLoading
+        android:id="@+id/book_loading"
+        android:layout_width="@dimen/book_loading_width"
+        android:layout_height="@dimen/book_loading_height"
+        app:layout_constraintBottom_toBottomOf="@+id/lv"
+        app:layout_constraintEnd_toEndOf="@+id/lv"
+        app:layout_constraintStart_toStartOf="@+id/lv"
+        app:layout_constraintTop_toTopOf="@+id/lv">
+
+    </com.victor.loading.book.BookLoading>
 
 </android.support.constraint.ConstraintLayout>

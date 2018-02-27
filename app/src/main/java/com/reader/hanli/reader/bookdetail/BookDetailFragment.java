@@ -13,6 +13,7 @@ import com.reader.hanli.reader.R;
 import com.reader.hanli.reader.R2;
 import com.reader.hanli.reader.data.bean.Book;
 import com.reader.hanli.reader.read.ReadActivity;
+import com.victor.loading.book.BookLoading;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,9 @@ public class BookDetailFragment extends BaseFragment implements BookDetailContra
 
     @BindView(R2.id.lv)
     ObservableListView lv;
+
+    @BindView(R2.id.book_loading)
+    BookLoading book_loading;
 
     private BookDetailContract.Presenter mPresenter;
 
@@ -69,12 +73,16 @@ public class BookDetailFragment extends BaseFragment implements BookDetailContra
 
     @Override
     public void showLoading() {
-
+        book_loading.start();
+        book_loading.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void dismissLoading() {
-
+        if(book_loading.isStart()){
+            book_loading.stop();
+        }
+        book_loading.setVisibility(View.GONE);
     }
 
     @Override

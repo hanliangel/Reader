@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -18,7 +19,7 @@
                 android:id="@+id/tv_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="15dp"
+                android:textSize="@dimen/read_text_size"
                 android:textColor="@android:color/black"
                 />
 
@@ -50,6 +51,18 @@
         </LinearLayout>
 
     </ScrollView>
+
+
+    <com.victor.loading.book.BookLoading
+        android:id="@+id/book_loading"
+        android:layout_width="@dimen/book_loading_width"
+        android:layout_height="@dimen/book_loading_height"
+        app:layout_constraintBottom_toBottomOf="@+id/sv"
+        app:layout_constraintEnd_toEndOf="@+id/sv"
+        app:layout_constraintStart_toStartOf="@+id/sv"
+        app:layout_constraintTop_toTopOf="@+id/sv">
+
+    </com.victor.loading.book.BookLoading>
 
 
 </android.support.constraint.ConstraintLayout>
