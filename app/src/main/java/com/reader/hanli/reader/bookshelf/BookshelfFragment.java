@@ -15,14 +15,11 @@ import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.blankj.utilcode.util.ConvertUtils;
 import com.reader.hanli.baselibrary.base.BaseFragment;
 import com.reader.hanli.reader.R;
-import com.reader.hanli.reader.R2;
 import com.reader.hanli.reader.data.bean.Book;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
@@ -33,10 +30,8 @@ import in.srain.cube.views.ptr.PtrHandler;
 
 public class BookshelfFragment extends BaseFragment implements BookshelfContract.View {
 
-    @BindView(R2.id.smlv)
     SwipeMenuListView smlv;
 
-    @BindView(R2.id.ptr)
     PtrFrameLayout ptr;
 
     private BookshelfContract.Presenter mPresenter;
@@ -47,7 +42,8 @@ public class BookshelfFragment extends BaseFragment implements BookshelfContract
     @Override
     public View initView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_bookshelf, null);
-        ButterKnife.bind(this, view);
+        smlv = (SwipeMenuListView) view.findViewById(R.id.smlv);
+        ptr = (PtrFrameLayout) view.findViewById(R.id.ptr);
 
         mAdapter = new BookListAdapter(getContext(), new ArrayList<Book>());
         initSwipeMenu();

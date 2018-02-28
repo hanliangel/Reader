@@ -22,7 +22,6 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.reader.hanli.baselibrary.base.BaseFragment;
 import com.reader.hanli.reader.MainActivity;
 import com.reader.hanli.reader.R;
-import com.reader.hanli.reader.R2;
 import com.reader.hanli.reader.bookdetail.BookDetailActivity;
 import com.reader.hanli.reader.bookshelf.BookListAdapter;
 import com.reader.hanli.reader.data.bean.Book;
@@ -30,8 +29,6 @@ import com.reader.hanli.reader.data.bean.Book;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by hanli on 2018/2/23.
@@ -39,13 +36,10 @@ import butterknife.ButterKnife;
 
 public class SearchFragment extends BaseFragment implements SearchContract.View , FragmentUtils.OnBackClickListener{
 
-    @BindView(R2.id.search_view)
     MaterialSearchView mSearchView;
 
-    @BindView(R2.id.tool_bar)
     Toolbar mToolbar;
 
-    @BindView(R2.id.lv)
     ListView lv;
 
     private BookListAdapter mAdapter;
@@ -61,7 +55,9 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
     @Override
     public View initView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search , null);
-        ButterKnife.bind(this , view);
+        mSearchView = (MaterialSearchView) view.findViewById(R.id.search_view);
+        mToolbar = (Toolbar) view.findViewById(R.id.tool_bar);
+        lv = (ListView) view.findViewById(R.id.lv);
 
         mAdapter = new BookListAdapter(getContext() , new ArrayList<Book>());
         mSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {

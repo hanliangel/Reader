@@ -8,13 +8,10 @@ import android.widget.TextView;
 import com.reader.hanli.baselibrary.base.BaseAdapter;
 import com.reader.hanli.baselibrary.base.BaseHolder;
 import com.reader.hanli.reader.R;
-import com.reader.hanli.reader.R2;
 import com.reader.hanli.reader.data.bean.Book;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by hanli on 2018/2/24.
@@ -40,12 +37,11 @@ public class ChapterListAdapter extends BaseAdapter<Book.Chapter , ChapterListAd
 
     public class Holder extends BaseHolder{
 
-        @BindView(R2.id.tv)
         TextView tv;
 
         public Holder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this , itemView);
+            tv = (TextView) itemView.findViewById(R.id.tv);
         }
 
     }

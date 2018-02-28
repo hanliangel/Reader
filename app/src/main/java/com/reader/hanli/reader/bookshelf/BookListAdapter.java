@@ -10,13 +10,9 @@ import com.bumptech.glide.Glide;
 import com.reader.hanli.baselibrary.base.BaseAdapter;
 import com.reader.hanli.baselibrary.base.BaseHolder;
 import com.reader.hanli.reader.R;
-import com.reader.hanli.reader.R2;
 import com.reader.hanli.reader.data.bean.Book;
 
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by hanli on 2018/2/11.
@@ -48,21 +44,21 @@ public class BookListAdapter extends BaseAdapter<Book, BookListAdapter.Holder> {
 
     public class Holder extends BaseHolder {
 
-        @BindView(R2.id.iv_book_cover)
         ImageView iv_book_cover;
 
-        @BindView(R2.id.tv_name)
         TextView tv_name;
 
-        @BindView(R2.id.tv_description)
         TextView tv_description;
 
-        @BindView(R2.id.tv_author)
         TextView tv_author;
 
         public Holder(View itemView , Book book) {
             super(itemView);
-            ButterKnife.bind(this , itemView);
+            iv_book_cover = (ImageView) itemView.findViewById(R.id.iv_book_cover);
+            tv_name = (TextView) itemView.findViewById(R.id.tv_name);
+            tv_description = (TextView) itemView.findViewById(R.id.tv_description);
+            tv_author = (TextView) itemView.findViewById(R.id.tv_author);
+
         }
     }
 }

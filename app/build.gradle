@@ -3,8 +3,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'com.jakewharton.butterknife'
-//apply plugin: 'realm-android'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 25
@@ -25,9 +24,9 @@ android {
     }
 }
 
-//realm {
-//    syncEnabled = true
-//}
+realm {
+    syncEnabled = true
+}
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -42,8 +41,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
     implementation project(':baselibrary')
     implementation 'com.blankj:utilcode:1.12.5'
-    implementation 'com.jakewharton:butterknife:8.4.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'in.srain.cube:ultra-ptr:1.0.11'
 //    annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
