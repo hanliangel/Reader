@@ -33,6 +33,11 @@ public class SearchPresenter implements SearchContract.Presenter {
     }
 
     @Override
+    public void destroy() {
+
+    }
+
+    @Override
     public void search(final String searchText) {
         Observable.create(new ObservableOnSubscribe<List<Book>>() {
             @Override

@@ -21,4 +21,6 @@
     <dimen name="flexible_space_image_height">150dp</dimen>
     <dimen name="intersection_height">50dp</dimen>
     <dimen name="header_bar_height">50dp</dimen>
+
+    <dimen name="book_detail_collect_size">20dp</dimen>
 </resources>

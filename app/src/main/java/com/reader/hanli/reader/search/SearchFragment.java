@@ -1,10 +1,8 @@
 package com.reader.hanli.reader.search;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +14,6 @@ import android.widget.ListView;
 
 import com.blankj.utilcode.util.FragmentUtils;
 import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.ObjectUtils;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.reader.hanli.baselibrary.base.BaseFragment;
 import com.reader.hanli.reader.R;
@@ -60,10 +57,7 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
     @Override
     public View initView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search , null);
-//        mSearchView = (MaterialSearchView) view.findViewById(R.id.search_view);
         ButterKnife.bind(this , view);
-//        mToolbar = (Toolbar) view.findViewById(R.id.tool_bar);
-//        lv = (ListView) view.findViewById(R.id.lv);
 
         mAdapter = new BookListAdapter(getContext() , new ArrayList<Book>());
         mSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
@@ -91,10 +85,7 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
             }
         });
 
-        if(ObjectUtils.isNotEmpty(mActivity)){
-            setHasOptionsMenu(true);
-            mActivity.setSupportActionBar(mToolbar);
-        }
+        initToolbar(mToolbar);
         lv.setAdapter(mAdapter);
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -110,7 +101,7 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.main_menu , menu);
+        inflater.inflate(R.menu.search_menu, menu);
         MenuItem searchMenu = menu.findItem(R.id.action_search);
         mSearchView.setMenuItem(searchMenu);
     }

@@ -1,11 +1,14 @@
 package com.reader.hanli.reader.data.engine.impl;
 
+import com.reader.hanli.reader.MyApplication;
+import com.reader.hanli.reader.data.bean.Book;
 import com.reader.hanli.reader.data.engine.BookEngine;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by hanli on 2018/2/24.
@@ -37,5 +40,11 @@ public abstract class BaseEngineImpl implements BookEngine {
         rawContent = rawContent.replaceAll("&nbsp;" , "");
         rawContent = rawContent.replaceAll("<.*>.*</[\\w-\\W-]*>", "");
         return rawContent;
+    }
+
+
+    @Override
+    public List<Book> getBookshelf() {
+        return MyApplication.getInstance().getDaoSession().getBookDao().loadAll();
     }
 }

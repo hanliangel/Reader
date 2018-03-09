@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'realm-android'
 apply plugin: 'com.jakewharton.butterknife'
+apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 25
@@ -19,10 +19,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-}
-
-realm {
-    syncEnabled = true
 }
 
 dependencies {
@@ -48,6 +44,7 @@ dependencies {
     compile 'com.victor:lib:1.0.4'
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'org.greenrobot:greendao:3.2.2'
 
 //    compile 'com.github.ksoichiro:android-observablescrollview:1.5.0'
 

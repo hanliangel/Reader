@@ -18,7 +18,6 @@ public interface BookshelfContract {
 
         void refreshBookshelf();
 
-        void openBook(@NotNull Book book);
     }
 
     interface View extends BaseView<Presenter>{

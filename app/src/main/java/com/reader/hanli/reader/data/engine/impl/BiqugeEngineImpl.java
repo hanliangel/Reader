@@ -8,17 +8,13 @@ import com.blankj.utilcode.util.ObjectUtils;
 import com.reader.hanli.reader.data.bean.Book;
 import com.reader.hanli.reader.data.engine.BookEngine;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
 
 /**
  * Created by hanli on 2018/2/11.
@@ -30,10 +26,6 @@ public class BiqugeEngineImpl extends BaseEngineImpl {
 
     private static final String ENGINE_NAME = "biquge";
 
-    @Override
-    public List<Book> getBookshelf() {
-        return null;
-    }
 
     @Override
     public List<Book> searchBook(String search) {
@@ -61,7 +53,8 @@ public class BiqugeEngineImpl extends BaseEngineImpl {
                     String title = title_elements.get(0).attr("title");
                     String href = title_elements.get(0).attr("href");
                     book.setName(title);
-                    book.setBookUrl(new AbstractMap.SimpleEntry<>(ENGINE_NAME , href));
+                    book.setBookUrl(href);
+                    book.setEngineName(ENGINE_NAME);
                 }
 
                 // 添加描述
@@ -106,7 +99,7 @@ public class BiqugeEngineImpl extends BaseEngineImpl {
     public Book initBookChapters(Book book) {
         if(ObjectUtils.isNotEmpty(book.getBookUrl())){
             try{
-                Document document = getDocument(book.getBookUrl().getValue());
+                Document document = getDocument(book.getBookUrl());
                 Element list = document.getElementById("list");
                 Elements chapter_list = list.child(0).children();
                 // 这个网站，章节列表中会有两个dt，第一个表示最新章节部分开始，第二个表示正文部分开始
@@ -123,7 +116,7 @@ public class BiqugeEngineImpl extends BaseEngineImpl {
                         String chapterUrl = chapter_element.attr("href");
                         String chapterName = chapter_element.text();
                         chapter.setName(chapterName);
-                        chapter.setChapterUrl(new AbstractMap.SimpleEntry<String, String>(ENGINE_NAME , book.getBookUrl().getValue() + chapterUrl));
+                        chapter.setChapterUrl(new AbstractMap.SimpleEntry<String, String>(ENGINE_NAME , book.getBookUrl() + chapterUrl));
                         chapter.setId(chapterId);
                         chapterId ++ ;
                         chapters.add(chapter);

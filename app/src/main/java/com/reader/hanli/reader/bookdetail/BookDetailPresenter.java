@@ -1,8 +1,11 @@
 package com.reader.hanli.reader.bookdetail;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ObjectUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.reader.hanli.reader.MyApplication;
 import com.reader.hanli.reader.data.bean.Book;
+import com.reader.hanli.reader.data.bean.BookDao;
 import com.reader.hanli.reader.data.engine.EngineHelper;
 import com.reader.hanli.reader.read.ReadActivity;
 
@@ -27,6 +30,8 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
     private BookDetailContract.View mView;
 
     private boolean mHasStart;
+
+    private Disposable mBookDetailDisposable;
 
     public BookDetailPresenter(Book mBook, BookDetailContract.View mView) {
         this.mBook = mBook;
@@ -53,7 +58,7 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
         .subscribe(new Observer<Book>() {
             @Override
             public void onSubscribe(Disposable d) {
-
+                mBookDetailDisposable = d;
             }
 
             @Override
@@ -80,11 +85,30 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
     }
 
     @Override
+    public boolean collect() {
+        BookDao bookDao = MyApplication.getInstance().getDaoSession().getBookDao();
+        bookDao.insert(mBook);
+        List<Book> books = bookDao.loadAll();
+        for(Book book : books){
+            LogUtils.i("book" , "查询的内容：" + book);
+        }
+        return false;
+    }
+
+    @Override
     public void start() {
         if(mHasStart){
             return ;
         }
+        mView.showBook(mBook);
         getBookDetail();
         mHasStart = true;
+    }
+
+    @Override
+    public void destroy() {
+        if(mBookDetailDisposable != null && !mBookDetailDisposable.isDisposed()){
+            mBookDetailDisposable.dispose();
+        }
     }
 }

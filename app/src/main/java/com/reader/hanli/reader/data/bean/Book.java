@@ -1,14 +1,25 @@
 package com.reader.hanli.reader.data.bean;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Transient;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import org.greenrobot.greendao.annotation.Generated;
 
 /**
  * Created by hanli on 2018/2/11.
  */
-
+@Entity
 public class Book implements Serializable{
+
+    private static final long serialVersionUID = 1;
+
+    @Id(autoincrement = true)
+    private Long bookId;
+
     /**
      * 封面
      */
@@ -40,11 +51,36 @@ public class Book implements Serializable{
     private String latestChapter;
 
     /**
-     * 对应的引擎name和链接
+     * 对应的引擎名称
      */
-    private Map.Entry<String , String> bookUrl;
+    private String engineName;
 
+    /**
+     * 对应的书的url
+     */
+    private String bookUrl;
+
+    @Transient
     private List<Chapter> chapters;
+
+    @Generated(hash = 1062057393)
+    public Book(Long bookId, String coverUri, String name, String description,
+            String author, String latestTime, String latestChapter,
+            String engineName, String bookUrl) {
+        this.bookId = bookId;
+        this.coverUri = coverUri;
+        this.name = name;
+        this.description = description;
+        this.author = author;
+        this.latestTime = latestTime;
+        this.latestChapter = latestChapter;
+        this.engineName = engineName;
+        this.bookUrl = bookUrl;
+    }
+
+    @Generated(hash = 1839243756)
+    public Book() {
+    }
 
     public String getCoverUri() {
         return coverUri;
@@ -102,21 +138,35 @@ public class Book implements Serializable{
         this.latestChapter = latestChapter;
     }
 
-    public Map.Entry<String, String> getBookUrl() {
+    public String getBookUrl() {
         return bookUrl;
     }
 
-    public void setBookUrl(Map.Entry<String, String> bookUrl) {
+    public void setBookUrl(String bookUrl) {
         this.bookUrl = bookUrl;
     }
 
+    public String getEngineName() {
+        return engineName;
+    }
+
+    public void setEngineName(String engineName) {
+        this.engineName = engineName;
+    }
+
+
+
     public static class Chapter implements Serializable{
+
+        private static final long serialVersionUID = 1;
 
         private int id;
 
         private String name;
 
         private String content;
+
+        private int BookId;
 
         /**
          * 对应的引擎name和链接
@@ -168,5 +218,13 @@ public class Book implements Serializable{
                 ", bookUrl=" + bookUrl +
                 ", chapters=" + chapters +
                 '}';
+    }
+
+    public Long getBookId() {
+        return this.bookId;
+    }
+
+    public void setBookId(Long bookId) {
+        this.bookId = bookId;
     }
 }

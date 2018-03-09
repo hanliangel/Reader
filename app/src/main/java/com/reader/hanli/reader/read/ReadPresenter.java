@@ -48,6 +48,11 @@ public class ReadPresenter implements ReadContract.Presenter {
     }
 
     @Override
+    public void destroy() {
+
+    }
+
+    @Override
     public void nextChapter() {
         switchChapter(mCurrentChapterId + 1);
     }

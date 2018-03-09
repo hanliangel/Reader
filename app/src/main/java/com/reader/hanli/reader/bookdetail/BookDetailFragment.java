@@ -6,8 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.reader.hanli.baselibrary.base.BaseFragment;
 import com.reader.hanli.reader.R;
 import com.reader.hanli.reader.R2;
@@ -32,6 +36,12 @@ public class BookDetailFragment extends BaseFragment implements BookDetailContra
     @BindView(R2.id.book_loading)
     BookLoading book_loading;
 
+    /**
+     * 列表顶部的书籍详情
+     */
+    View mHeaderView;
+    HeaderHolder mHeaderHolder;
+
     private BookDetailContract.Presenter mPresenter;
 
     private ChapterListAdapter mAdapter;
@@ -51,6 +61,15 @@ public class BookDetailFragment extends BaseFragment implements BookDetailContra
                 mPresenter.startRead(position);
             }
         });
+        mHeaderView = inflater.inflate(R.layout.header_book_detail , null);
+        mHeaderHolder = new HeaderHolder(mHeaderView);
+        mHeaderHolder.bt_collect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.collect();
+            }
+        });
+        lv.addHeaderView(mHeaderView);
 
         return view;
     }
@@ -68,7 +87,15 @@ public class BookDetailFragment extends BaseFragment implements BookDetailContra
 
     @Override
     public void showBook(Book book) {
-        // TODO 显示书籍详情部分
+        // 显示书籍详情部分
+        if(mHeaderHolder != null){
+            mHeaderHolder.tv_name.setText(book.getName());
+            mHeaderHolder.tv_description.setText(book.getDescription());
+            mHeaderHolder.tv_author.setText(book.getAuthor());
+            Glide.with(getContext())
+                    .load(book.getCoverUri())
+                    .into(mHeaderHolder.iv_book_cover);
+        }
 
         // 显示章节列表部分
         mAdapter.setData(book.getChapters());
@@ -96,5 +123,27 @@ public class BookDetailFragment extends BaseFragment implements BookDetailContra
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mPresenter.destroy();
+    }
+
+    public class HeaderHolder{
+        @BindView(R2.id.iv_book_cover)
+        ImageView iv_book_cover;
+
+        @BindView(R2.id.tv_name)
+        TextView tv_name;
+
+        @BindView(R2.id.tv_description)
+        TextView tv_description;
+
+        @BindView(R2.id.tv_author)
+        TextView tv_author;
+
+        @BindView(R2.id.bt_collect)
+        Button bt_collect;
+
+        public HeaderHolder(View headerView){
+            ButterKnife.bind(this , headerView);
+        }
     }
 }

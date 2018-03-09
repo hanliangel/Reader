@@ -18,6 +18,12 @@ public interface BookDetailContract {
         Book getBookDetail();
 
         void startRead(int position);
+
+        /**
+         * 收藏，即加入书架
+         * @return
+         */
+        boolean collect();
     }
 
     interface View extends BaseView<Presenter>{

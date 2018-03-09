@@ -33,6 +33,11 @@ public class BookshelfPresenter implements BookshelfContract.Presenter {
         refreshBookshelf();
     }
 
+    @Override
+    public void destroy() {
+
+    }
+
 
     @Override
     public void refreshBookshelf() {
@@ -65,10 +70,5 @@ public class BookshelfPresenter implements BookshelfContract.Presenter {
 
             }
         });
-    }
-
-    @Override
-    public void openBook(@NotNull Book book) {
-
     }
 }
