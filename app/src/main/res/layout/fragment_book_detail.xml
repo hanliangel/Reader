@@ -12,14 +12,14 @@
 
     <!--</android.support.v7.widget.Toolbar>-->
 
-    <com.github.ksoichiro.android.observablescrollview.ObservableListView
+    <ListView
         android:id="@+id/lv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="80dp">
 
-    </com.github.ksoichiro.android.observablescrollview.ObservableListView>
+    </ListView>
 
     <com.victor.loading.book.BookLoading
         android:id="@+id/book_loading"

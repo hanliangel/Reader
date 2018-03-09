@@ -6,15 +6,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ListView;
 
-import com.github.ksoichiro.android.observablescrollview.ObservableListView;
 import com.reader.hanli.baselibrary.base.BaseFragment;
 import com.reader.hanli.reader.R;
+import com.reader.hanli.reader.R2;
 import com.reader.hanli.reader.data.bean.Book;
 import com.reader.hanli.reader.read.ReadActivity;
 import com.victor.loading.book.BookLoading;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by hanli on 2018/2/24.
@@ -22,8 +26,10 @@ import java.util.ArrayList;
 
 public class BookDetailFragment extends BaseFragment implements BookDetailContract.View {
 
-    ObservableListView lv;
+    @BindView(R2.id.lv)
+    ListView lv;
 
+    @BindView(R2.id.book_loading)
     BookLoading book_loading;
 
     private BookDetailContract.Presenter mPresenter;
@@ -34,8 +40,9 @@ public class BookDetailFragment extends BaseFragment implements BookDetailContra
     @Override
     public View initView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_book_detail ,  null);
-        lv = (ObservableListView) view.findViewById(R.id.lv);
-        book_loading = (BookLoading) view.findViewById(R.id.book_loading);
+        ButterKnife.bind(this , view);
+//        lv = (ListView) view.findViewById(R.id.lv);
+//        book_loading = (BookLoading) view.findViewById(R.id.book_loading);
         mAdapter = new ChapterListAdapter(getContext() , new ArrayList<Book.Chapter>());
         lv.setAdapter(mAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -44,6 +51,7 @@ public class BookDetailFragment extends BaseFragment implements BookDetailContra
                 mPresenter.startRead(position);
             }
         });
+
         return view;
     }
 
@@ -83,5 +91,10 @@ public class BookDetailFragment extends BaseFragment implements BookDetailContra
     @Override
     public void gotoReadActivity(Book book, int chapterId) {
         ReadActivity.startActivity(getContext() , book , chapterId);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }
