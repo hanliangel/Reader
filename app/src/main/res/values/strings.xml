@@ -4,4 +4,8 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+
+    <string name="bt_collect_book">加入书架</string>
+    <string name="bt_has_collect_book">移出书架</string>
 </resources>

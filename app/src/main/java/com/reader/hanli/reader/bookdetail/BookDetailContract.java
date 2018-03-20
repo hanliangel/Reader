@@ -24,6 +24,18 @@ public interface BookDetailContract {
          * @return
          */
         boolean collect();
+
+        /**
+         * 取消收藏，移出书架
+         * @return
+         */
+        boolean unCollect();
+
+        /**
+         * 是否已经收藏
+         * @return
+         */
+        boolean isCollect();
     }
 
     interface View extends BaseView<Presenter>{

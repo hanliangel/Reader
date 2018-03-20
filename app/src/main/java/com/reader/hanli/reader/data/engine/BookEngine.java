@@ -17,14 +17,14 @@ public interface BookEngine {
     List<Book> getBookshelf();
 
     /**
-     * 根据关键字搜索书籍
+     * 根据关键字从网络搜索书籍
      * @param search
      * @return
      */
     List<Book> searchBook(String search);
 
     /**
-     * 初始化章节列表
+     * 从网络初始化章节列表
      * @param book
      * @return
      */
@@ -36,4 +36,23 @@ public interface BookEngine {
      * @return
      */
     Book.Chapter initChapter(Book.Chapter chapter);
+
+    /**
+     * 收藏一本书，如果在数据库查询到url和该书一致的已存在收藏书籍，则不重复收藏
+     * @param book
+     */
+    void collectBook(Book book);
+
+    /**
+     * 取消收藏，根据url来取消对应的书籍
+     * @param book
+     */
+    void unCollectBook(Book book);
+
+    /**
+     * 该书是否已经收藏，以url为判断依据，相同url视为一本书
+     * @param book
+     * @return
+     */
+    boolean isCollect(Book book);
 }

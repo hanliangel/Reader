@@ -66,7 +66,11 @@ public class BookDetailFragment extends BaseFragment implements BookDetailContra
         mHeaderHolder.bt_collect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.collect();
+                if(mPresenter.isCollect()){
+                    mPresenter.unCollect();
+                }else{
+                    mPresenter.collect();
+                }
             }
         });
         lv.addHeaderView(mHeaderView);
@@ -92,6 +96,11 @@ public class BookDetailFragment extends BaseFragment implements BookDetailContra
             mHeaderHolder.tv_name.setText(book.getName());
             mHeaderHolder.tv_description.setText(book.getDescription());
             mHeaderHolder.tv_author.setText(book.getAuthor());
+            if(mPresenter.isCollect()){
+                mHeaderHolder.bt_collect.setText(getString(R.string.bt_has_collect_book));
+            }else{
+                mHeaderHolder.bt_collect.setText(getString(R.string.bt_collect_book));
+            }
             Glide.with(getContext())
                     .load(book.getCoverUri())
                     .into(mHeaderHolder.iv_book_cover);

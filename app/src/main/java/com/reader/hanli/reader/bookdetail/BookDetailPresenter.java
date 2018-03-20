@@ -24,13 +24,21 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class BookDetailPresenter implements BookDetailContract.Presenter {
-
+    /**
+     * 当前页面对应的书
+     */
     private Book mBook;
 
     private BookDetailContract.View mView;
 
+    /**
+     * 是否已经执行过start，这里start只应该执行一次
+     */
     private boolean mHasStart;
 
+    /**
+     * 加载书籍的时候的中断控制，如果页面结束那么中断加载过程
+     */
     private Disposable mBookDetailDisposable;
 
     public BookDetailPresenter(Book mBook, BookDetailContract.View mView) {
@@ -86,13 +94,21 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
 
     @Override
     public boolean collect() {
-        BookDao bookDao = MyApplication.getInstance().getDaoSession().getBookDao();
-        bookDao.insert(mBook);
-        List<Book> books = bookDao.loadAll();
-        for(Book book : books){
-            LogUtils.i("book" , "查询的内容：" + book);
-        }
-        return false;
+        EngineHelper.getInstance().getBookEngine().collectBook(mBook);
+        mView.showBook(mBook);
+        return true;
+    }
+
+    @Override
+    public boolean unCollect() {
+        EngineHelper.getInstance().getBookEngine().unCollectBook(mBook);
+        mView.showBook(mBook);
+        return true;
+    }
+
+    @Override
+    public boolean isCollect() {
+        return EngineHelper.getInstance().getBookEngine().isCollect(mBook);
     }
 
     @Override

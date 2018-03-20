@@ -1,9 +1,12 @@
 package com.reader.hanli.reader.data.engine.impl;
 
+import com.blankj.utilcode.util.ObjectUtils;
 import com.reader.hanli.reader.MyApplication;
 import com.reader.hanli.reader.data.bean.Book;
+import com.reader.hanli.reader.data.bean.BookDao;
 import com.reader.hanli.reader.data.engine.BookEngine;
 
+import org.greenrobot.greendao.query.QueryBuilder;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -46,5 +49,33 @@ public abstract class BaseEngineImpl implements BookEngine {
     @Override
     public List<Book> getBookshelf() {
         return MyApplication.getInstance().getDaoSession().getBookDao().loadAll();
+    }
+
+    @Override
+    public void collectBook(Book book) {
+        BookDao bookDao = MyApplication.getInstance().getDaoSession().getBookDao();
+        if(!isCollect(book)){
+            // 没有收藏过，才会进行收藏
+            bookDao.insert(book);
+        }
+    }
+
+    @Override
+    public void unCollectBook(Book book) {
+        BookDao bookDao = MyApplication.getInstance().getDaoSession().getBookDao();
+        List<Book> list = bookDao.queryBuilder().where(BookDao.Properties.BookUrl.eq(book.getBookUrl())).list();
+        for(Book queryBook : list){
+            bookDao.delete(queryBook);
+        }
+    }
+
+    @Override
+    public boolean isCollect(Book book) {
+        BookDao bookDao = MyApplication.getInstance().getDaoSession().getBookDao();
+        List<Book> list = bookDao.queryBuilder().where(BookDao.Properties.BookUrl.eq(book.getBookUrl())).list();
+        if(ObjectUtils.isEmpty(list)){
+            return false;
+        }
+        return true;
     }
 }
