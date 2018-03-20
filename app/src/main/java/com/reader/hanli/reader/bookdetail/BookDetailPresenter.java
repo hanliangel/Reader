@@ -6,6 +6,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.reader.hanli.reader.MyApplication;
 import com.reader.hanli.reader.data.bean.Book;
 import com.reader.hanli.reader.data.bean.BookDao;
+import com.reader.hanli.reader.data.engine.BookEngine;
 import com.reader.hanli.reader.data.engine.EngineHelper;
 import com.reader.hanli.reader.read.ReadActivity;
 
@@ -41,10 +42,16 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
      */
     private Disposable mBookDetailDisposable;
 
+    /**
+     * 当前这本书对应的bookengine
+     */
+    private BookEngine mCurrentBookEngine;
+
     public BookDetailPresenter(Book mBook, BookDetailContract.View mView) {
         this.mBook = mBook;
         this.mView = mView;
         mView.setPresenter(this);
+        mCurrentBookEngine = EngineHelper.getInstance().getBookEngine(mBook.getEngineName());
     }
 
     @Override
@@ -53,7 +60,7 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
         Observable.create(new ObservableOnSubscribe<Book>() {
             @Override
             public void subscribe(ObservableEmitter<Book> e) throws Exception {
-                Book book = EngineHelper.getInstance().getBookEngine().initBookChapters(mBook);
+                Book book = EngineHelper.getInstance().getBookEngine(mBook.getEngineName()).initBookChapters(mBook);
                 if(ObjectUtils.isNotEmpty(book)){
                     e.onNext(book);
                 }else{
@@ -94,21 +101,21 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
 
     @Override
     public boolean collect() {
-        EngineHelper.getInstance().getBookEngine().collectBook(mBook);
+        mCurrentBookEngine.collectBook(mBook);
         mView.showBook(mBook);
         return true;
     }
 
     @Override
     public boolean unCollect() {
-        EngineHelper.getInstance().getBookEngine().unCollectBook(mBook);
+        mCurrentBookEngine.unCollectBook(mBook);
         mView.showBook(mBook);
         return true;
     }
 
     @Override
     public boolean isCollect() {
-        return EngineHelper.getInstance().getBookEngine().isCollect(mBook);
+        return mCurrentBookEngine.isCollect(mBook);
     }
 
     @Override

@@ -155,23 +155,40 @@ public class Book implements Serializable{
     }
 
 
-
+    @Entity
     public static class Chapter implements Serializable{
 
         private static final long serialVersionUID = 1;
 
+        /**
+         * 章节顺序id，第一章为0，往后递增
+         */
         private int id;
 
+        /**
+         * 章节名称
+         */
         private String name;
 
+        /**
+         * 章节内容
+         */
         private String content;
 
+        /**
+         * 他所属的书本的id，暂时没用
+         */
         private int BookId;
 
         /**
-         * 对应的引擎name和链接
+         * 对应的引擎类名称
          */
-        private Map.Entry<String , String> chapterUrl;
+        private String engineName;
+
+        /**
+         * 章节url
+         */
+        private String chapterUrl;
 
         public int getId() {
             return id;
@@ -197,12 +214,20 @@ public class Book implements Serializable{
             this.content = content;
         }
 
-        public Map.Entry<String, String> getChapterUrl() {
+        public String getChapterUrl() {
             return chapterUrl;
         }
 
-        public void setChapterUrl(Map.Entry<String, String> chapterUrl) {
+        public void setChapterUrl(String chapterUrl) {
             this.chapterUrl = chapterUrl;
+        }
+
+        public String getEngineName() {
+            return engineName;
+        }
+
+        public void setEngineName(String engineName) {
+            this.engineName = engineName;
         }
     }
 

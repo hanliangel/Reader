@@ -6,6 +6,7 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ObjectUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.reader.hanli.reader.data.bean.Book;
+import com.reader.hanli.reader.data.engine.BookEngine;
 import com.reader.hanli.reader.data.engine.EngineHelper;
 
 import io.reactivex.Observable;
@@ -31,10 +32,16 @@ public class ReadPresenter implements ReadContract.Presenter {
 
     private boolean mHasStart;
 
+    /**
+     * 当前书本对应的bookengine
+     */
+    private BookEngine mCurrentBookEngine;
+
     public ReadPresenter(ReadContract.View mView, Book mBook, int chapterId) {
         this.mView = mView;
         this.mBook = mBook;
         this.mCurrentChapterId = chapterId;
+        mCurrentBookEngine = EngineHelper.getInstance().getBookEngine(mBook.getEngineName());
         mView.setPresenter(this);
     }
 
@@ -112,7 +119,7 @@ public class ReadPresenter implements ReadContract.Presenter {
                 Book.Chapter chapter = getChapter(chapterId);
                 if (ObjectUtils.isNotEmpty(chapter)) {
                     if (TextUtils.isEmpty(chapter.getContent())) {
-                        chapter = EngineHelper.getInstance().getBookEngine().initChapter(chapter);
+                        chapter = mCurrentBookEngine.initChapter(chapter);
                     }
                     e.onNext(chapter);
                 } else {

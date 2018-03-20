@@ -62,4 +62,14 @@
         app:layout_constraintStart_toStartOf="@+id/iv_book_cover"
         app:layout_constraintTop_toBottomOf="@+id/iv_book_cover" />
 
+    <Button
+        android:id="@+id/bt_continue_read"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="上次读到"
+        android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/bt_collect"
+        app:layout_constraintStart_toEndOf="@+id/bt_collect"
+        app:layout_constraintTop_toTopOf="@+id/bt_collect" />
+
 </android.support.constraint.ConstraintLayout>

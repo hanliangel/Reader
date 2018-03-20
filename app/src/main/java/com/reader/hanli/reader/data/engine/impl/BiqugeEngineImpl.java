@@ -116,7 +116,8 @@ public class BiqugeEngineImpl extends BaseEngineImpl {
                         String chapterUrl = chapter_element.attr("href");
                         String chapterName = chapter_element.text();
                         chapter.setName(chapterName);
-                        chapter.setChapterUrl(new AbstractMap.SimpleEntry<String, String>(ENGINE_NAME , book.getBookUrl() + chapterUrl));
+                        chapter.setEngineName(ENGINE_NAME);
+                        chapter.setChapterUrl(book.getBookUrl() + chapterUrl);
                         chapter.setId(chapterId);
                         chapterId ++ ;
                         chapters.add(chapter);
@@ -134,7 +135,7 @@ public class BiqugeEngineImpl extends BaseEngineImpl {
     public Book.Chapter initChapter(Book.Chapter chapter) {
         if(ObjectUtils.isNotEmpty(chapter)){
             try{
-                Document document = getDocument(chapter.getChapterUrl().getValue());
+                Document document = getDocument(chapter.getChapterUrl());
                 Element content_element = document.getElementById("content");
                 String content = getContentFromHtml(content_element.html());
                 chapter.setContent(content);
