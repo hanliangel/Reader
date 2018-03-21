@@ -17,7 +17,16 @@ public interface BookDetailContract {
          */
         Book getBookDetail();
 
+        /**
+         * 开始阅读对应的章节
+         * @param position
+         */
         void startRead(int position);
+
+        /**
+         * 继续阅读，从标记继续
+         */
+        void continueRead();
 
         /**
          * 收藏，即加入书架

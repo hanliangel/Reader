@@ -23,10 +23,9 @@
 
     <com.victor.loading.book.BookLoading
         android:id="@+id/book_loading"
-        android:layout_width="@dimen/book_loading_width"
-        android:layout_height="@dimen/book_loading_height"
+        android:layout_width="@dimen/book_detail_loading_width"
+        android:layout_height="@dimen/book_detail_loading_height"
         app:layout_constraintBottom_toBottomOf="@+id/lv"
-        app:layout_constraintEnd_toEndOf="@+id/lv"
         app:layout_constraintStart_toStartOf="@+id/lv"
         app:layout_constraintTop_toTopOf="@+id/lv">
 

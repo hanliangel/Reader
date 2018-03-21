@@ -2,12 +2,16 @@ package com.reader.hanli.reader.data.bean;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Keep;
+import org.greenrobot.greendao.annotation.ToMany;
+import org.greenrobot.greendao.annotation.ToOne;
 import org.greenrobot.greendao.annotation.Transient;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.DaoException;
 
 /**
  * Created by hanli on 2018/2/11.
@@ -60,13 +64,35 @@ public class Book implements Serializable{
      */
     private String bookUrl;
 
-    @Transient
+    /**
+     * 当前正在读读章节的url，给greenDao使用
+     */
+    private String readingChapterUrl;
+
+    /**
+     * 当前正在读读章节
+     */
+    @ToOne(joinProperty = "readingChapterUrl")
+    private Chapter readingChapter;
+
+    @ToMany(referencedJoinProperty = "bookId")
     private List<Chapter> chapters;
 
-    @Generated(hash = 1062057393)
-    public Book(Long bookId, String coverUri, String name, String description,
-            String author, String latestTime, String latestChapter,
-            String engineName, String bookUrl) {
+    /** Used to resolve relations */
+    @Generated(hash = 2040040024)
+    private transient DaoSession daoSession;
+
+    /** Used for active entity operations. */
+    @Generated(hash = 1097957864)
+    private transient BookDao myDao;
+
+    @Generated(hash = 993621563)
+    private transient String readingChapter__resolvedKey;
+
+    @Generated(hash = 1045407155)
+    public Book(Long bookId, String coverUri, String name, String description, String author,
+            String latestTime, String latestChapter, String engineName, String bookUrl,
+            String readingChapterUrl) {
         this.bookId = bookId;
         this.coverUri = coverUri;
         this.name = name;
@@ -76,6 +102,7 @@ public class Book implements Serializable{
         this.latestChapter = latestChapter;
         this.engineName = engineName;
         this.bookUrl = bookUrl;
+        this.readingChapterUrl = readingChapterUrl;
     }
 
     @Generated(hash = 1839243756)
@@ -114,10 +141,29 @@ public class Book implements Serializable{
         this.author = author;
     }
 
+    /**
+     * To-many relationship, resolved on first access (and after reset).
+     * Changes to to-many relations are not persisted, make changes to the target entity.
+     */
+    @Keep
     public List<Chapter> getChapters() {
+        if (chapters == null && this.daoSession != null) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            ChapterDao targetDao = daoSession.getChapterDao();
+            List<Chapter> chaptersNew = targetDao._queryBook_Chapters(bookId);
+            synchronized (this) {
+                if (chapters == null) {
+                    chapters = chaptersNew;
+                }
+            }
+        }
         return chapters;
     }
 
+    @Keep
     public void setChapters(List<Chapter> chapters) {
         this.chapters = chapters;
     }
@@ -154,83 +200,6 @@ public class Book implements Serializable{
         this.engineName = engineName;
     }
 
-
-    @Entity
-    public static class Chapter implements Serializable{
-
-        private static final long serialVersionUID = 1;
-
-        /**
-         * 章节顺序id，第一章为0，往后递增
-         */
-        private int id;
-
-        /**
-         * 章节名称
-         */
-        private String name;
-
-        /**
-         * 章节内容
-         */
-        private String content;
-
-        /**
-         * 他所属的书本的id，暂时没用
-         */
-        private int BookId;
-
-        /**
-         * 对应的引擎类名称
-         */
-        private String engineName;
-
-        /**
-         * 章节url
-         */
-        private String chapterUrl;
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
-        }
-
-        public String getChapterUrl() {
-            return chapterUrl;
-        }
-
-        public void setChapterUrl(String chapterUrl) {
-            this.chapterUrl = chapterUrl;
-        }
-
-        public String getEngineName() {
-            return engineName;
-        }
-
-        public void setEngineName(String engineName) {
-            this.engineName = engineName;
-        }
-    }
-
     @Override
     public String toString() {
         return "Book{" +
@@ -251,5 +220,91 @@ public class Book implements Serializable{
 
     public void setBookId(Long bookId) {
         this.bookId = bookId;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    @Generated(hash = 936914273)
+    public synchronized void resetChapters() {
+        chapters = null;
+    }
+
+    /**
+     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#delete(Object)}.
+     * Entity must attached to an entity context.
+     */
+    @Generated(hash = 128553479)
+    public void delete() {
+        if (myDao == null) {
+            throw new DaoException("Entity is detached from DAO context");
+        }
+        myDao.delete(this);
+    }
+
+    /**
+     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#refresh(Object)}.
+     * Entity must attached to an entity context.
+     */
+    @Generated(hash = 1942392019)
+    public void refresh() {
+        if (myDao == null) {
+            throw new DaoException("Entity is detached from DAO context");
+        }
+        myDao.refresh(this);
+    }
+
+    /**
+     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#update(Object)}.
+     * Entity must attached to an entity context.
+     */
+    @Generated(hash = 713229351)
+    public void update() {
+        if (myDao == null) {
+            throw new DaoException("Entity is detached from DAO context");
+        }
+        myDao.update(this);
+    }
+
+    /** To-one relationship, resolved on first access. */
+    @Generated(hash = 920449393)
+    public Chapter getReadingChapter() {
+        String __key = this.readingChapterUrl;
+        if (readingChapter__resolvedKey == null || readingChapter__resolvedKey != __key) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            ChapterDao targetDao = daoSession.getChapterDao();
+            Chapter readingChapterNew = targetDao.load(__key);
+            synchronized (this) {
+                readingChapter = readingChapterNew;
+                readingChapter__resolvedKey = __key;
+            }
+        }
+        return readingChapter;
+    }
+
+    /** called by internal mechanisms, do not call yourself. */
+    @Generated(hash = 2006479482)
+    public void setReadingChapter(Chapter readingChapter) {
+        synchronized (this) {
+            this.readingChapter = readingChapter;
+            readingChapterUrl = readingChapter == null ? null : readingChapter.getChapterUrl();
+            readingChapter__resolvedKey = readingChapterUrl;
+        }
+    }
+
+    public String getReadingChapterUrl() {
+        return this.readingChapterUrl;
+    }
+
+    public void setReadingChapterUrl(String readingChapterUrl) {
+        this.readingChapterUrl = readingChapterUrl;
+    }
+
+    /** called by internal mechanisms, do not call yourself. */
+    @Generated(hash = 1115456930)
+    public void __setDaoSession(DaoSession daoSession) {
+        this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getBookDao() : null;
     }
 }

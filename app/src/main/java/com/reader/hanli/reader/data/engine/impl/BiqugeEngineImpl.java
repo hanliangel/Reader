@@ -6,6 +6,7 @@ import com.blankj.utilcode.util.EncodeUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ObjectUtils;
 import com.reader.hanli.reader.data.bean.Book;
+import com.reader.hanli.reader.data.bean.Chapter;
 import com.reader.hanli.reader.data.engine.BookEngine;
 
 import org.jsoup.nodes.Document;
@@ -104,14 +105,14 @@ public class BiqugeEngineImpl extends BaseEngineImpl {
                 Elements chapter_list = list.child(0).children();
                 // 这个网站，章节列表中会有两个dt，第一个表示最新章节部分开始，第二个表示正文部分开始
                 int dt_num = 0;
-                List<Book.Chapter> chapters = new ArrayList<>();
+                List<Chapter> chapters = new ArrayList<>();
                 int chapterId = 0;
                 for(Element element : chapter_list){
                     if(element.nodeName().equals("dt")){
                         dt_num ++;
                     }else if(dt_num >= 2){
                         // 正文部分开始
-                        Book.Chapter chapter = new Book.Chapter();
+                        Chapter chapter = new Chapter();
                         Element chapter_element = element.child(0);
                         String chapterUrl = chapter_element.attr("href");
                         String chapterName = chapter_element.text();
@@ -119,6 +120,7 @@ public class BiqugeEngineImpl extends BaseEngineImpl {
                         chapter.setEngineName(ENGINE_NAME);
                         chapter.setChapterUrl(book.getBookUrl() + chapterUrl);
                         chapter.setId(chapterId);
+                        chapter.setBookId(book.getBookId());
                         chapterId ++ ;
                         chapters.add(chapter);
                     }
@@ -132,7 +134,7 @@ public class BiqugeEngineImpl extends BaseEngineImpl {
     }
 
     @Override
-    public Book.Chapter initChapter(Book.Chapter chapter) {
+    public Chapter initChapter(Chapter chapter) {
         if(ObjectUtils.isNotEmpty(chapter)){
             try{
                 Document document = getDocument(chapter.getChapterUrl());

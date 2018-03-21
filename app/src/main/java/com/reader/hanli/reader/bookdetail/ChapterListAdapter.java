@@ -9,6 +9,7 @@ import com.reader.hanli.baselibrary.base.BaseAdapter;
 import com.reader.hanli.baselibrary.base.BaseHolder;
 import com.reader.hanli.reader.R;
 import com.reader.hanli.reader.data.bean.Book;
+import com.reader.hanli.reader.data.bean.Chapter;
 
 import java.util.List;
 
@@ -17,10 +18,10 @@ import java.util.List;
  * Created by hanli on 2018/2/24.
  */
 
-public class ChapterListAdapter extends BaseAdapter<Book.Chapter , ChapterListAdapter.Holder> {
+public class ChapterListAdapter extends BaseAdapter<Chapter , ChapterListAdapter.Holder> {
 
 
-    public ChapterListAdapter(Context context, List<Book.Chapter> list) {
+    public ChapterListAdapter(Context context, List<Chapter> list) {
         super(context, list);
     }
 

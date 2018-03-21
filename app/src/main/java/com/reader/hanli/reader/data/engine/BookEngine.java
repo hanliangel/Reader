@@ -1,6 +1,7 @@
 package com.reader.hanli.reader.data.engine;
 
 import com.reader.hanli.reader.data.bean.Book;
+import com.reader.hanli.reader.data.bean.Chapter;
 
 import java.util.List;
 
@@ -35,7 +36,7 @@ public interface BookEngine {
      * @param chapter
      * @return
      */
-    Book.Chapter initChapter(Book.Chapter chapter);
+    Chapter initChapter(Chapter chapter);
 
     /**
      * 收藏一本书，如果在数据库查询到url和该书一致的已存在收藏书籍，则不重复收藏
@@ -51,8 +52,8 @@ public interface BookEngine {
 
     /**
      * 该书是否已经收藏，以url为判断依据，相同url视为一本书
-     * @param book
-     * @return
+     * @param bookUrl
+     * @return 将从数据库查询到到书返回
      */
-    boolean isCollect(Book book);
+    Book getCollectBook(String bookUrl);
 }

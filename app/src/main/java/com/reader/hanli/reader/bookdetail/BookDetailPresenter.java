@@ -1,14 +1,12 @@
 package com.reader.hanli.reader.bookdetail;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ObjectUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.reader.hanli.reader.MyApplication;
 import com.reader.hanli.reader.data.bean.Book;
-import com.reader.hanli.reader.data.bean.BookDao;
+import com.reader.hanli.reader.data.bean.Chapter;
 import com.reader.hanli.reader.data.engine.BookEngine;
 import com.reader.hanli.reader.data.engine.EngineHelper;
-import com.reader.hanli.reader.read.ReadActivity;
 
 import java.util.List;
 
@@ -52,6 +50,10 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
         this.mView = mView;
         mView.setPresenter(this);
         mCurrentBookEngine = EngineHelper.getInstance().getBookEngine(mBook.getEngineName());
+        Book collectBook = mCurrentBookEngine.getCollectBook(mBook.getBookUrl());
+        if(ObjectUtils.isNotEmpty(collectBook)){
+            this.mBook = collectBook;
+        }
     }
 
     @Override
@@ -78,6 +80,14 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
 
             @Override
             public void onNext(Book book) {
+                if(isCollect()){
+                    List<Chapter> chapters = book.getChapters();
+                    if(ObjectUtils.isNotEmpty(chapters)){
+                        MyApplication.getInstance().getDaoSession().getChapterDao().insertOrReplaceInTx(chapters);
+                    }
+                    book.update();
+
+                }
                 mView.showBook(mBook);
             }
 
@@ -100,6 +110,11 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
     }
 
     @Override
+    public void continueRead() {
+        startRead(mBook.getReadingChapter().getId());
+    }
+
+    @Override
     public boolean collect() {
         mCurrentBookEngine.collectBook(mBook);
         mView.showBook(mBook);
@@ -115,7 +130,7 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
 
     @Override
     public boolean isCollect() {
-        return mCurrentBookEngine.isCollect(mBook);
+        return ObjectUtils.isNotEmpty(mCurrentBookEngine.getCollectBook(mBook.getBookUrl()));
     }
 
     @Override

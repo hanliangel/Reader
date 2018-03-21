@@ -4,9 +4,10 @@ import com.blankj.utilcode.util.ObjectUtils;
 import com.reader.hanli.reader.MyApplication;
 import com.reader.hanli.reader.data.bean.Book;
 import com.reader.hanli.reader.data.bean.BookDao;
+import com.reader.hanli.reader.data.bean.Chapter;
+import com.reader.hanli.reader.data.bean.ChapterDao;
 import com.reader.hanli.reader.data.engine.BookEngine;
 
-import org.greenrobot.greendao.query.QueryBuilder;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -54,9 +55,10 @@ public abstract class BaseEngineImpl implements BookEngine {
     @Override
     public void collectBook(Book book) {
         BookDao bookDao = MyApplication.getInstance().getDaoSession().getBookDao();
-        if(!isCollect(book)){
+        if(ObjectUtils.isEmpty(getCollectBook(book.getBookUrl()))){
             // 没有收藏过，才会进行收藏
             bookDao.insert(book);
+            book.refresh();
         }
     }
 
@@ -70,12 +72,12 @@ public abstract class BaseEngineImpl implements BookEngine {
     }
 
     @Override
-    public boolean isCollect(Book book) {
+    public Book getCollectBook(String bookUrl) {
         BookDao bookDao = MyApplication.getInstance().getDaoSession().getBookDao();
-        List<Book> list = bookDao.queryBuilder().where(BookDao.Properties.BookUrl.eq(book.getBookUrl())).list();
+        List<Book> list = bookDao.queryBuilder().where(BookDao.Properties.BookUrl.eq(bookUrl)).list();
         if(ObjectUtils.isEmpty(list)){
-            return false;
+            return null;
         }
-        return true;
+        return list.get(0);
     }
 }
