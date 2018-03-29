@@ -1,28 +1,24 @@
 package com.reader.hanli.reader.data.engine.impl;
 
-import android.util.Log;
-
 import com.blankj.utilcode.util.EncodeUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ObjectUtils;
 import com.reader.hanli.reader.data.bean.Book;
 import com.reader.hanli.reader.data.bean.Chapter;
-import com.reader.hanli.reader.data.engine.BookEngine;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by hanli on 2018/2/11.
+ * Created by hanli on 2018/3/29.
+ * 顶点小说网站：http://www.booktxt.net/
+ * 目前逻辑和笔趣阁一样
  */
-
-public class BiqugeEngineImpl extends BaseEngineImpl {
-
+public class DingDianEngineImpl extends BaseEngineImpl {
     @Override
     public List<Book> searchBook(String search) {
         //获取整个页面文件
@@ -145,11 +141,11 @@ public class BiqugeEngineImpl extends BaseEngineImpl {
 
     @Override
     public String getSearchUrl() {
-        return "http://zhannei.baidu.com/cse/search?s=920895234054625192&q=";
+        return "http://zhannei.baidu.com/cse/search?s=5334330359795686106&q=";
     }
 
     @Override
     public String getEngineName() {
-        return "biquge";
+        return "dingdian";
     }
 }

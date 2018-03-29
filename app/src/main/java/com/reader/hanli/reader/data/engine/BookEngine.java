@@ -56,4 +56,16 @@ public interface BookEngine {
      * @return 将从数据库查询到到书返回
      */
     Book getCollectBook(String bookUrl);
+
+    /**
+     * 获得搜索的基础url
+     * @return
+     */
+    String getSearchUrl();
+
+    /**
+     * 获得当前引擎的名称
+     * @return
+     */
+    String getEngineName();
 }

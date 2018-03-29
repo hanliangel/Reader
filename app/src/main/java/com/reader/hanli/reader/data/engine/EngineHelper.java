@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class EngineHelper {
 
-    private static final String DEFAULT_ENGINE_NAME = "biquge";
+    private static final String DEFAULT_ENGINE_NAME = "dingdian";
 
     private static EngineHelper mEngineHelper;
 
