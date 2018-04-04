@@ -109,7 +109,7 @@ public class DingDianEngineImpl extends BaseEngineImpl {
                         String chapterName = chapter_element.text();
                         chapter.setName(chapterName);
                         chapter.setEngineName(getEngineName());
-                        chapter.setChapterUrl(book.getBookUrl() + chapterUrl);
+                        chapter.setChapterUrl(getChapterUrl(book.getBookUrl() , chapterUrl));
                         chapter.setId(chapterId);
                         chapter.setBookId(book.getBookId());
                         chapterId ++ ;

@@ -12,6 +12,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -44,6 +46,27 @@ public abstract class BaseEngineImpl implements BookEngine {
         rawContent = rawContent.replaceAll("&nbsp;" , "");
         rawContent = rawContent.replaceAll("<.*>.*</[\\w-\\W-]*>", "");
         return rawContent;
+    }
+
+    /**
+     * 从传入的书籍的url和章节href组合出章节的完整url并返回
+     * @param bookUrl
+     * @param chapterHref
+     * @return
+     */
+    protected String getChapterUrl(String bookUrl , String chapterHref){
+        String chapterUrl = "";
+        if(chapterHref.startsWith("/")){
+            try {
+                URL url = new URL(bookUrl);
+                chapterUrl = url.getProtocol() + "://" + url.getHost() + chapterHref;
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }else{
+            chapterUrl = bookUrl + chapterHref;
+        }
+        return chapterUrl;
     }
 
 

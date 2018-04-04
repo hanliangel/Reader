@@ -61,6 +61,7 @@ public class BookDetailFragment extends BaseFragment implements BookDetailContra
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                position = position - lv.getHeaderViewsCount();
                 mPresenter.startRead(position);
             }
         });
