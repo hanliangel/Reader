@@ -115,9 +115,24 @@ public class ReadPresenter implements ReadContract.Presenter {
                 mView.showLoading();
             }
         });
-        loadChapter(chapterId + 1).subscribe(new Consumer<Chapter>() {
+        loadChapter(chapterId + 1).subscribe(new Observer<Chapter>() {
             @Override
-            public void accept(Chapter chapter) throws Exception {
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Chapter chapter) {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.showShort(e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
 
             }
         });
