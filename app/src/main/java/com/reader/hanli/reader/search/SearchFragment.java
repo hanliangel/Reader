@@ -1,7 +1,9 @@
 package com.reader.hanli.reader.search;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,6 +23,7 @@ import com.reader.hanli.reader.R2;
 import com.reader.hanli.reader.bookdetail.BookDetailActivity;
 import com.reader.hanli.reader.bookshelf.BookListAdapter;
 import com.reader.hanli.reader.data.bean.Book;
+import com.reader.hanli.reader.data.engine.EngineHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +36,7 @@ import butterknife.ButterKnife;
  * Created by hanli on 2018/2/23.
  */
 
-public class SearchFragment extends BaseFragment implements SearchContract.View , FragmentUtils.OnBackClickListener{
+public class SearchFragment extends BaseFragment implements SearchContract.View , FragmentUtils.OnBackClickListener , MenuItem.OnMenuItemClickListener{
 
     @BindView(R2.id.search_view)
     MaterialSearchView mSearchView;
@@ -47,6 +50,11 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
     private BookListAdapter mAdapter;
 
     private SearchContract.Presenter mPresenter;
+
+    /**
+     * 修改搜索引擎的dialog
+     */
+    private ChangeSearchEngineDialog mChangeEngineDialog;
 
     @Override
     public void setPresenter(SearchContract.Presenter presenter) {
@@ -85,6 +93,7 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
             }
         });
 
+        refreshTitle();
         initToolbar(mToolbar);
         lv.setAdapter(mAdapter);
 
@@ -104,6 +113,8 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
         inflater.inflate(R.menu.search_menu, menu);
         MenuItem searchMenu = menu.findItem(R.id.action_search);
         mSearchView.setMenuItem(searchMenu);
+        MenuItem changeEngineMenu = menu.findItem(R.id.action_change);
+        changeEngineMenu.setOnMenuItemClickListener(this);
     }
 
     @Override
@@ -128,11 +139,38 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
     }
 
     @Override
+    public void showChangeSearchEngineDialog() {
+        mChangeEngineDialog = new ChangeSearchEngineDialog(getActivity());
+        mChangeEngineDialog.setEngineSelectListener(new ChangeSearchEngineDialog.OnEngineSelectListener() {
+            @Override
+            public void onEngineSelected(String engineName) {
+                mPresenter.switchEngineName(engineName);
+            }
+        });
+        mChangeEngineDialog.show();
+    }
+
+    @Override
+    public void refreshTitle() {
+        mToolbar.setTitle(getString(R.string.title_search)+ "(" + EngineHelper.getInstance().getBookEngine().getEngineAlias() + ")");
+    }
+
+    @Override
     public boolean onBackClick() {
         if(mSearchView.isSearchOpen()){
             mSearchView.closeSearch();
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_change:
+                showChangeSearchEngineDialog();
+                break;
+        }
+        return true;
     }
 }

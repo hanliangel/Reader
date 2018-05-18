@@ -2,7 +2,10 @@ package com.reader.hanli.reader.data.engine;
 
 import com.blankj.utilcode.util.ObjectUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,7 +23,7 @@ public class EngineHelper {
     private Map<String , BookEngine> engineMap;
 
     private EngineHelper(){
-        engineMap = new HashMap<>();
+        engineMap = EngineFactory.getInstance().getAllBookEngine();
     }
 
     public static EngineHelper getInstance(){
@@ -63,5 +66,13 @@ public class EngineHelper {
             engineMap.put(engineName , engine);
         }
         return engine;
+    }
+
+    /**
+     * 获得配置的所有的书籍引擎
+     * @return
+     */
+    public List<BookEngine> getAllBookEngine(){
+        return new ArrayList<>(engineMap.values());
     }
 }

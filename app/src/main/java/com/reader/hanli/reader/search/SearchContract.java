@@ -14,15 +14,37 @@ public interface SearchContract {
 
     interface Presenter extends BasePresenter{
         void search(String searchText);
+
+        /**
+         * 切换搜索引擎
+         * @param engineName
+         */
+        void switchEngineName(String engineName);
     }
 
     interface View extends BaseView<Presenter>{
 
         void showResult(List<Book> list);
 
+        /**
+         * 显示标题栏上的搜索输入框
+         */
         void showSearchView();
 
+        /**
+         * 隐藏标题栏上的搜索输入框
+         */
         void hideSearchView();
+
+        /**
+         * 显示改变搜索引擎的dialog
+         */
+        void showChangeSearchEngineDialog();
+
+        /**
+         * 刷新标题栏
+         */
+        void refreshTitle();
     }
 
 }

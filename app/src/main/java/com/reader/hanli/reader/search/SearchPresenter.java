@@ -73,4 +73,10 @@ public class SearchPresenter implements SearchContract.Presenter {
             }
         });
     }
+
+    @Override
+    public void switchEngineName(String engineName) {
+        EngineHelper.getInstance().switchEngine(engineName);
+        mView.refreshTitle();
+    }
 }

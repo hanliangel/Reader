@@ -12,6 +12,7 @@ import com.reader.hanli.baselibrary.base.BaseHolder;
 import com.reader.hanli.reader.R;
 import com.reader.hanli.reader.R2;
 import com.reader.hanli.reader.data.bean.Book;
+import com.reader.hanli.reader.data.engine.EngineHelper;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class BookListAdapter extends BaseAdapter<Book, BookListAdapter.Holder> {
         holder.tv_name.setText(book.getName());
         holder.tv_description.setText(book.getDescription());
         holder.tv_author.setText(book.getAuthor());
+        holder.tv_alias.setText(EngineHelper.getInstance().getBookEngine(book.getEngineName()).getEngineAlias());
         Glide.with(mContext)
                 .load(book.getCoverUri())
                 .into(holder.iv_book_cover);
@@ -59,6 +61,9 @@ public class BookListAdapter extends BaseAdapter<Book, BookListAdapter.Holder> {
 
         @BindView(R2.id.tv_author)
         TextView tv_author;
+
+        @BindView(R2.id.tv_engine_alias)
+        TextView tv_alias;
 
         public Holder(View itemView , Book book) {
             super(itemView);

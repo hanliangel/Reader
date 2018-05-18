@@ -9,4 +9,10 @@
         android:title="@string/abc_search_hint"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/action_change"
+        android:icon="@drawable/ic_autorenew_white_36dp"
+        android:orderInCategory="99"
+        app:showAsAction="always" />
+
 </menu>

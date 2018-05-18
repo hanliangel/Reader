@@ -19,6 +19,12 @@ import java.util.List;
  * 目前逻辑和笔趣阁一样
  */
 public class DingDianEngineImpl extends BaseEngineImpl {
+
+
+    private static int RETRY_MAX_NUM = 3;
+
+    private int mRetryNum;
+
     @Override
     public List<Book> searchBook(String search) {
         //获取整个页面文件
@@ -81,8 +87,14 @@ public class DingDianEngineImpl extends BaseEngineImpl {
                 LogUtils.iTag("engine" , book.toString());
                 list.add(book);
             }
+            mRetryNum = 0;
         } catch (Exception e) {
             e.printStackTrace();
+            if(mRetryNum <= RETRY_MAX_NUM){
+                mRetryNum ++;
+                LogUtils.i("重新尝试搜索");
+                list = searchBook(search);
+            }
         }
         return list;
     }
@@ -147,5 +159,10 @@ public class DingDianEngineImpl extends BaseEngineImpl {
     @Override
     public String getEngineName() {
         return "dingdian";
+    }
+
+    @Override
+    public String getEngineAlias() {
+        return "顶点";
     }
 }

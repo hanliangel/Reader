@@ -23,6 +23,10 @@ import java.util.List;
 
 public class BiqugeEngineImpl extends BaseEngineImpl {
 
+    private static int RETRY_MAX_NUM = 3;
+
+    private int mRetryNum;
+
     @Override
     public List<Book> searchBook(String search) {
         //获取整个页面文件
@@ -82,11 +86,17 @@ public class BiqugeEngineImpl extends BaseEngineImpl {
                             break;
                     }
                 }
-                LogUtils.iTag("engine" , book.toString());
                 list.add(book);
             }
+
+            mRetryNum = 0;
         } catch (Exception e) {
             e.printStackTrace();
+            if(mRetryNum <= RETRY_MAX_NUM){
+                mRetryNum ++;
+                LogUtils.i("重新尝试搜索");
+                list = searchBook(search);
+            }
         }
         return list;
     }
@@ -151,5 +161,10 @@ public class BiqugeEngineImpl extends BaseEngineImpl {
     @Override
     public String getEngineName() {
         return "biquge";
+    }
+
+    @Override
+    public String getEngineAlias() {
+        return "笔趣阁";
     }
 }

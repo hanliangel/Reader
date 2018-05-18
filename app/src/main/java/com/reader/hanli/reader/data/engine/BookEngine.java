@@ -64,8 +64,14 @@ public interface BookEngine {
     String getSearchUrl();
 
     /**
-     * 获得当前引擎的名称
+     * 获得当前引擎的名称，指的是配置文件当中作为key的那个名字
      * @return
      */
     String getEngineName();
+
+    /**
+     * 获得引擎的别名，用于显示给用户看的名称
+     * @return
+     */
+    String getEngineAlias();
 }
