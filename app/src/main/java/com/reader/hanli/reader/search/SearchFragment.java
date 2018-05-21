@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 import com.blankj.utilcode.util.FragmentUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.reader.hanli.baselibrary.base.BaseFragment;
 import com.reader.hanli.reader.R;
@@ -24,6 +25,7 @@ import com.reader.hanli.reader.bookdetail.BookDetailActivity;
 import com.reader.hanli.reader.bookshelf.BookListAdapter;
 import com.reader.hanli.reader.data.bean.Book;
 import com.reader.hanli.reader.data.engine.EngineHelper;
+import com.reader.hanli.reader.search.widget.MySearchView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +41,7 @@ import butterknife.ButterKnife;
 public class SearchFragment extends BaseFragment implements SearchContract.View , FragmentUtils.OnBackClickListener , MenuItem.OnMenuItemClickListener{
 
     @BindView(R2.id.search_view)
-    MaterialSearchView mSearchView;
+    MySearchView mSearchView;
 
     @BindView(R2.id.tool_bar)
     Toolbar mToolbar;
@@ -68,7 +70,7 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
         ButterKnife.bind(this , view);
 
         mAdapter = new BookListAdapter(getContext() , new ArrayList<Book>());
-        mSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+        mSearchView.setOnQueryTextListener(new MySearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 mPresenter.search(query);
@@ -81,10 +83,9 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
             }
         });
 
-        mSearchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+        mSearchView.setOnSearchViewListener(new MySearchView.SearchViewListener() {
             @Override
             public void onSearchViewShown() {
-
             }
 
             @Override
@@ -93,6 +94,7 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
             }
         });
 
+        refreshSearchHistory();
         refreshTitle();
         initToolbar(mToolbar);
         lv.setAdapter(mAdapter);
@@ -153,6 +155,11 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
     @Override
     public void refreshTitle() {
         mToolbar.setTitle(getString(R.string.title_search)+ "(" + EngineHelper.getInstance().getBookEngine().getEngineAlias() + ")");
+    }
+
+    @Override
+    public void refreshSearchHistory() {
+        mSearchView.setSuggestions(mPresenter.getSearchHistory());
     }
 
     @Override

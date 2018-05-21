@@ -14,7 +14,7 @@ public class Chapter implements Serializable {
     /**
      * 章节顺序id，第一章为0，往后递增
      */
-    private int id;
+    private Integer id;
 
     /**
      * 章节名称
@@ -42,12 +42,8 @@ public class Chapter implements Serializable {
     @Id
     private String chapterUrl;
 
-    @Generated(hash = 393170288)
-    public Chapter() {
-    }
-
-    @Generated(hash = 1595012418)
-    public Chapter(int id, String name, String content, Long bookId,
+    @Generated(hash = 794289371)
+    public Chapter(Integer id, String name, String content, Long bookId,
             String engineName, String chapterUrl) {
         this.id = id;
         this.name = name;
@@ -57,11 +53,15 @@ public class Chapter implements Serializable {
         this.chapterUrl = chapterUrl;
     }
 
-    public int getId() {
+    @Generated(hash = 393170288)
+    public Chapter() {
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

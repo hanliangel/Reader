@@ -7,6 +7,8 @@ import com.reader.hanli.reader.data.bean.BookDao;
 import com.reader.hanli.reader.data.bean.Chapter;
 import com.reader.hanli.reader.data.bean.ChapterDao;
 import com.reader.hanli.reader.data.bean.DaoMaster;
+import com.reader.hanli.reader.data.bean.SearchHistory;
+import com.reader.hanli.reader.data.bean.SearchHistoryDao;
 
 import org.greenrobot.greendao.database.Database;
 
@@ -25,7 +27,6 @@ public class MyOpenHelper extends DaoMaster.DevOpenHelper {
 
     @Override
     public void onUpgrade(Database db, int oldVersion, int newVersion) {
-        MigrationHelper.getInstance().migrate(db , BookDao.class);
-        MigrationHelper.getInstance().migrate(db , ChapterDao.class);
+        MigrationHelper.getInstance().migrate(db , BookDao.class , ChapterDao.class ,SearchHistoryDao.class);
     }
 }

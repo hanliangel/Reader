@@ -13,7 +13,18 @@ import java.util.List;
 public interface SearchContract {
 
     interface Presenter extends BasePresenter{
+
+        /**
+         * 搜索书本
+         * @param searchText
+         */
         void search(String searchText);
+
+        /**
+         * 返回搜索历史记录
+         * @return
+         */
+        List<String> getSearchHistory();
 
         /**
          * 切换搜索引擎
@@ -45,6 +56,11 @@ public interface SearchContract {
          * 刷新标题栏
          */
         void refreshTitle();
+
+        /**
+         * 刷新搜索历史
+         */
+        void refreshSearchHistory();
     }
 
 }
