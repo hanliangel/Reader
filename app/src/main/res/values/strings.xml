@@ -8,6 +8,7 @@
 
     <string name="bt_collect_book">加入书架</string>
     <string name="bt_has_collect_book">移出书架</string>
+    <string name="bt_book_detail_sort">切换排序</string>
 
     <string name="title_book_shelf">我的书架</string>
 

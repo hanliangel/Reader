@@ -8,6 +8,8 @@ import com.reader.hanli.reader.data.bean.Chapter;
 import com.reader.hanli.reader.data.engine.BookEngine;
 import com.reader.hanli.reader.data.engine.EngineHelper;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -44,6 +46,11 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
      * 当前这本书对应的bookengine
      */
     private BookEngine mCurrentBookEngine;
+
+    /**
+     * 当前的排序类型
+     */
+    private int mCurrentSort = -1;
 
     public BookDetailPresenter(Book mBook, BookDetailContract.View mView) {
         this.mBook = mBook;
@@ -131,6 +138,24 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
     @Override
     public boolean isCollect() {
         return ObjectUtils.isNotEmpty(mCurrentBookEngine.getCollectBook(mBook.getBookUrl()));
+    }
+
+    @Override
+    public void switchSort() {
+        if(mBook != null && mBook.getChapters() != null){
+            Collections.sort(mBook.getChapters() , new Comparator<Chapter>() {
+                @Override
+                public int compare(Chapter o1, Chapter o2) {
+                    if(o1.getId() > o2.getId()){
+                        return mCurrentSort;
+                    }else{
+                        return -mCurrentSort;
+                    }
+                }
+            });
+            mCurrentSort = -mCurrentSort;
+            mView.showBook(mBook);
+        }
     }
 
     @Override

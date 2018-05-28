@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:ptr="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,7 +11,7 @@
         android:id="@+id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"></android.support.v7.widget.Toolbar>
+        android:background="@color/colorPrimary"/>
 
     <!--<in.srain.cube.views.ptr.PtrFrameLayout-->
         <!--android:id="@+id/ptr"-->
@@ -27,10 +28,7 @@
     <com.baoyz.swipemenulistview.SwipeMenuListView
         android:id="@+id/smlv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="56dp"
-        ptr:layout_constraintTop_toBottomOf="@+id/tool_bar"
-        tools:layout_editor_absoluteX="0dp">
+        android:layout_height="match_parent">
 
     </com.baoyz.swipemenulistview.SwipeMenuListView>
 
@@ -38,4 +36,4 @@
 
 
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

@@ -83,6 +83,12 @@ public class BookDetailFragment extends BaseFragment implements BookDetailContra
                 mPresenter.continueRead();
             }
         });
+        mHeaderHolder.bt_sort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.switchSort();
+            }
+        });
         lv.addHeaderView(mHeaderView);
 
         return view;
@@ -168,6 +174,9 @@ public class BookDetailFragment extends BaseFragment implements BookDetailContra
 
         @BindView(R2.id.bt_continue_read)
         Button bt_continue_read;
+
+        @BindView(R2.id.bt_sort)
+        Button bt_sort;
 
         public HeaderHolder(View headerView){
             ButterKnife.bind(this , headerView);

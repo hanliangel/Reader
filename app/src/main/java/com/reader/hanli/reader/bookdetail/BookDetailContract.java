@@ -45,6 +45,11 @@ public interface BookDetailContract {
          * @return
          */
         boolean isCollect();
+
+        /**
+         * 切换排序
+         */
+        void switchSort();
     }
 
     interface View extends BaseView<Presenter>{
