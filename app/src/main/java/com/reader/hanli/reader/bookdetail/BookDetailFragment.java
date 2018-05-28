@@ -19,6 +19,7 @@ import com.reader.hanli.reader.R;
 import com.reader.hanli.reader.R2;
 import com.reader.hanli.reader.data.bean.Book;
 import com.reader.hanli.reader.data.bean.Chapter;
+import com.reader.hanli.reader.data.engine.EngineHelper;
 import com.reader.hanli.reader.read.ReadActivity;
 import com.victor.loading.book.BookLoading;
 
@@ -112,6 +113,7 @@ public class BookDetailFragment extends BaseFragment implements BookDetailContra
             mHeaderHolder.tv_name.setText(book.getName());
             mHeaderHolder.tv_description.setText(book.getDescription());
             mHeaderHolder.tv_author.setText(book.getAuthor());
+            mHeaderHolder.tv_engine_alias.setText(EngineHelper.getInstance().getBookEngine(book.getEngineName()).getEngineAlias());
             mHeaderHolder.bt_continue_read.setVisibility(View.GONE);
             if(mPresenter.isCollect()){
                 mHeaderHolder.bt_collect.setText(getString(R.string.bt_has_collect_book));
@@ -168,6 +170,9 @@ public class BookDetailFragment extends BaseFragment implements BookDetailContra
 
         @BindView(R2.id.tv_author)
         TextView tv_author;
+
+        @BindView(R2.id.tv_engine_alias)
+        TextView tv_engine_alias;
 
         @BindView(R2.id.bt_collect)
         Button bt_collect;

@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
-        android:maxLines="3"
+        android:maxLines="2"
         android:text="书籍描述"
         android:paddingRight="16dp"
         android:textSize="@dimen/book_item_desc_text_size"
@@ -44,11 +44,23 @@
         android:id="@+id/tv_author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="4dp"
         android:layout_marginStart="16dp"
-        android:textSize="@dimen/book_item_author_text_size"
-        android:textColor="@android:color/holo_blue_dark"
         android:text="作者"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="@dimen/book_item_author_text_size"
+        app:layout_constraintBottom_toTopOf="@+id/tv_engine_alias"
+        app:layout_constraintStart_toEndOf="@+id/iv_book_cover" />
+
+
+    <TextView
+        android:id="@+id/tv_engine_alias"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="站点"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="@dimen/book_item_author_text_size"
         app:layout_constraintBottom_toBottomOf="@+id/iv_book_cover"
         app:layout_constraintStart_toEndOf="@+id/iv_book_cover" />
 
