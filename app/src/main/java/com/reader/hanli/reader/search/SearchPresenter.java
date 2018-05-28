@@ -1,5 +1,6 @@
 package com.reader.hanli.reader.search;
 
+import com.blankj.utilcode.util.CacheUtils;
 import com.blankj.utilcode.util.ObjectUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.reader.hanli.reader.MyApplication;
@@ -29,6 +30,7 @@ public class SearchPresenter implements SearchContract.Presenter {
     private SearchContract.View mView;
 
     List<SearchHistory> mSearchHistories;
+
 
     public SearchPresenter(SearchContract.View mView) {
         this.mView = mView;

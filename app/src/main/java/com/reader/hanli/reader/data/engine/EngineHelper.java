@@ -1,5 +1,8 @@
 package com.reader.hanli.reader.data.engine;
 
+import android.text.TextUtils;
+
+import com.blankj.utilcode.util.CacheUtils;
 import com.blankj.utilcode.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -14,13 +17,25 @@ import java.util.Map;
 
 public class EngineHelper {
 
-    private static final String DEFAULT_ENGINE_NAME = "dingdian";
+    private static final String DEFAULT_ENGINE_NAME = "bequge";
 
     private static EngineHelper mEngineHelper;
 
+    /**
+     * 当前的搜索引擎
+     */
     private BookEngine mCurrentEngine;
 
+    /**
+     * 存储所有加载了的引擎的map
+     */
     private Map<String , BookEngine> engineMap;
+
+
+    /**
+     * 缓存的当前搜索引擎名称
+     */
+    private static final String CACHE_KEY_SEARCH_CUR_ENGINE_NAME = "search_cur_engine_name";
 
     private EngineHelper(){
         engineMap = EngineFactory.getInstance().getAllBookEngine();
@@ -40,6 +55,7 @@ public class EngineHelper {
      */
     public BookEngine switchEngine(String engineName){
         mCurrentEngine = getBookEngine(engineName);
+        CacheUtils.getInstance().put(CACHE_KEY_SEARCH_CUR_ENGINE_NAME , engineName);
         return mCurrentEngine;
     }
 
@@ -49,7 +65,12 @@ public class EngineHelper {
      */
     public BookEngine getBookEngine(){
         if(mCurrentEngine == null){
-            switchEngine(DEFAULT_ENGINE_NAME);
+            String lastEngineName = CacheUtils.getInstance().getString(CACHE_KEY_SEARCH_CUR_ENGINE_NAME , "");
+            if(TextUtils.isEmpty(lastEngineName)){
+                switchEngine(DEFAULT_ENGINE_NAME);
+            }else{
+                switchEngine(lastEngineName);
+            }
         }
         return mCurrentEngine;
     }
