@@ -179,6 +179,11 @@ public class ReadPresenter implements ReadContract.Presenter {
         if (chapterId >= mBook.getChapters().size() || chapterId < 0) {
             return null;
         }
-        return mBook.getChapters().get(chapterId);
+        Chapter chapter = mBook.getChapters().get(chapterId);
+        // 有可能是倒序排列
+        if(chapter.getId() != chapterId){
+            chapter = mBook.getChapters().get(mBook.getChapters().size() - 1 - chapterId);
+        }
+        return chapter;
     }
 }

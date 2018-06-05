@@ -50,7 +50,7 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
     /**
      * 当前的排序类型
      */
-    private int mCurrentSort = -1;
+    private int mCurrentSort = 1;
 
     public BookDetailPresenter(Book mBook, BookDetailContract.View mView) {
         this.mBook = mBook;
@@ -93,9 +93,9 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
                         MyApplication.getInstance().getDaoSession().getChapterDao().insertOrReplaceInTx(chapters);
                     }
                     book.update();
-
                 }
-                mView.showBook(mBook);
+                sort();
+                mView.showBook(book);
             }
 
             @Override
@@ -113,7 +113,7 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
 
     @Override
     public void startRead(int position) {
-        mView.gotoReadActivity(mBook , position);
+        mView.gotoReadActivity(mBook , mBook.getChapters().get(position).getId());
     }
 
     @Override
@@ -142,6 +142,11 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
 
     @Override
     public void switchSort() {
+        mCurrentSort = -mCurrentSort;
+        sort();
+    }
+
+    private void sort(){
         if(mBook != null && mBook.getChapters() != null){
             Collections.sort(mBook.getChapters() , new Comparator<Chapter>() {
                 @Override
@@ -153,7 +158,6 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
                     }
                 }
             });
-            mCurrentSort = -mCurrentSort;
             mView.showBook(mBook);
         }
     }
