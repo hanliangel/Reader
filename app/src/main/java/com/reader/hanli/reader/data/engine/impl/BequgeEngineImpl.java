@@ -103,22 +103,26 @@ public class BequgeEngineImpl extends BaseEngineImpl {
         if(ObjectUtils.isNotEmpty(book.getBookUrl())){
             try{
                 Document document = getDocument(book.getBookUrl());
-                Elements chapterElementlistAll = document.getElementsByClass("article_texttitleb");
+                Elements chapter_list = document.getElementById("list").child(0).children();
                 int chapterId = 0;
                 List<Chapter> chapters = new ArrayList<>();
-                for(Element chapterElementList : chapterElementlistAll.get(0).children()){
-                    Elements elementChildrens = chapterElementList.children();
-                    for(Element chapterElement : elementChildrens){
+                // 这个网站，章节列表中会有两个dt，第一个表示最新章节部分开始，第二个表示正文部分开始
+                int dt_num = 0;
+                for(Element element : chapter_list){
+                    if(element.nodeName().equals("dt")){
+                        dt_num ++;
+                    }else if(dt_num >= 2){
+                        // 正文部分开始
                         Chapter chapter = new Chapter();
-                        Element childElement = chapterElement.child(0);
-                        String chapterUrl = childElement.attr("href");
-                        String chapterName = childElement.text();
-                        chapter.setChapterUrl(getChapterUrl(book.getBookUrl() , chapterUrl));
+                        Element chapter_element = element.child(0);
+                        String chapterUrl = chapter_element.attr("href");
+                        String chapterName = chapter_element.text();
                         chapter.setName(chapterName);
                         chapter.setEngineName(getEngineName());
+                        chapter.setChapterUrl(getChapterUrl(book.getBookUrl() , chapterUrl));
                         chapter.setId(chapterId);
                         chapter.setBookId(book.getBookId());
-                        chapterId ++;
+                        chapterId ++ ;
                         chapters.add(chapter);
                     }
                 }
