@@ -139,7 +139,7 @@ public class BequgeEngineImpl extends BaseEngineImpl {
         if(ObjectUtils.isNotEmpty(chapter)){
             try{
                 Document document = getDocument(chapter.getChapterUrl());
-                Element content_element = document.getElementById("book_text");
+                Element content_element = document.getElementById("content");
                 String content = getContentFromHtml(content_element.html());
                 chapter.setContent(content);
             }catch (Exception e){
