@@ -111,11 +111,15 @@ public class BookshelfFragment extends BaseFragment implements BookshelfContract
     @Override
     public void showBookshelf(List<Book> books) {
         mAdapter.setData(books);
+        mAdapter.removeToList(1);
     }
 
     @Override
     public void refreshComplete() {
 //        ptr.refreshComplete();
+        if(mAdapter != null){
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -140,7 +144,7 @@ public class BookshelfFragment extends BaseFragment implements BookshelfContract
                 // set item width
                 openItem.setWidth(ConvertUtils.dp2px(90));
                 // set item title
-                openItem.setTitle("Open");
+                openItem.setTitle(getString(R.string.menu_remove_from_shelf));
                 // set item title fontsize
                 openItem.setTitleSize(18);
                 // set item title font color
@@ -148,22 +152,30 @@ public class BookshelfFragment extends BaseFragment implements BookshelfContract
                 // add to menu
                 menu.addMenuItem(openItem);
 
-                // create "delete" item
-                SwipeMenuItem deleteItem = new SwipeMenuItem(
-                        getContext());
-                // set item background
-                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-                        0x3F, 0x25)));
-                // set item width
-                deleteItem.setWidth(ConvertUtils.dp2px(90));
-                // set a icon
-                deleteItem.setIcon(R.drawable.ic_launcher_background);
-                // add to menu
-                menu.addMenuItem(deleteItem);
+//                // create "delete" item
+//                SwipeMenuItem deleteItem = new SwipeMenuItem(
+//                        getContext());
+//                // set item background
+//                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+//                        0x3F, 0x25)));
+//                // set item width
+//                deleteItem.setWidth(ConvertUtils.dp2px(90));
+//                // set a icon
+//                deleteItem.setIcon(R.drawable.ic_launcher_background);
+//                // add to menu
+//                menu.addMenuItem(deleteItem);
             }
         };
 
         // set creator
         smlv.setMenuCreator(creator);
+
+        smlv.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                mPresenter.removeFromShelf(position);
+                return true;
+            }
+        });
     }
 }

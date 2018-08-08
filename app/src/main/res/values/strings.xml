@@ -15,4 +15,6 @@
 
     <string name="title_search">搜索</string>
     <string name="dialog_change_engine_title">选择一个搜索站点</string>
+
+    <string name="menu_remove_from_shelf">移除</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.reader.hanli.reader.bookshelf;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.reader.hanli.reader.data.bean.Book;
 import com.reader.hanli.reader.data.engine.EngineHelper;
 
@@ -22,6 +23,11 @@ import io.reactivex.schedulers.Schedulers;
 public class BookshelfPresenter implements BookshelfContract.Presenter {
 
     private BookshelfContract.View mView;
+
+    /**
+     * 书架上的所有书
+     */
+    private List<Book> mBooks;
 
     public BookshelfPresenter(BookshelfContract.View mView) {
         this.mView = mView;
@@ -57,12 +63,13 @@ public class BookshelfPresenter implements BookshelfContract.Presenter {
 
             @Override
             public void onNext(List<Book> books) {
+                mBooks = books;
                 mView.showBookshelf(books);
             }
 
             @Override
             public void onError(Throwable e) {
-
+                ToastUtils.showShort("error:" + e.getMessage());
             }
 
             @Override
@@ -70,5 +77,13 @@ public class BookshelfPresenter implements BookshelfContract.Presenter {
 
             }
         });
+    }
+
+    @Override
+    public void removeFromShelf(int position) {
+        Book book = mBooks.get(position);
+        mBooks.remove(book);
+        EngineHelper.getInstance().getBookEngine().unCollectBook(book);
+        mView.refreshComplete();
     }
 }

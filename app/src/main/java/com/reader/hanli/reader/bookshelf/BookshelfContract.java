@@ -18,6 +18,8 @@ public interface BookshelfContract {
 
         void refreshBookshelf();
 
+        void removeFromShelf(int position);
+
     }
 
     interface View extends BaseView<Presenter>{
