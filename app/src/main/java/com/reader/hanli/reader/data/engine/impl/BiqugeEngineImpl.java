@@ -143,7 +143,7 @@ public class BiqugeEngineImpl extends BaseEngineImpl {
         if(ObjectUtils.isNotEmpty(chapter)){
             try{
                 Document document = getDocument(chapter.getChapterUrl());
-                Element content_element = document.getElementById("content");
+                Element content_element = cleanContentElement(document.getElementById("content"));
                 String content = getContentFromHtml(content_element.html());
                 chapter.setContent(content);
             }catch (Exception e){

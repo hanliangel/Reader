@@ -6,6 +6,7 @@ import com.blankj.utilcode.util.ObjectUtils;
 import com.reader.hanli.reader.data.bean.Book;
 import com.reader.hanli.reader.data.bean.Chapter;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -139,7 +140,7 @@ public class BequgeEngineImpl extends BaseEngineImpl {
         if(ObjectUtils.isNotEmpty(chapter)){
             try{
                 Document document = getDocument(chapter.getChapterUrl());
-                Element content_element = document.getElementById("content");
+                Element content_element = cleanContentElement(document.getElementById("content"));
                 String content = getContentFromHtml(content_element.html());
                 chapter.setContent(content);
             }catch (Exception e){

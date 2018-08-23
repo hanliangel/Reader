@@ -1,5 +1,7 @@
 package com.reader.hanli.reader.data.engine.impl;
 
+import android.support.annotation.NonNull;
+
 import com.blankj.utilcode.util.ObjectUtils;
 import com.reader.hanli.reader.MyApplication;
 import com.reader.hanli.reader.data.bean.Book;
@@ -10,6 +12,9 @@ import com.reader.hanli.reader.data.engine.BookEngine;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.safety.Whitelist;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -37,6 +42,23 @@ public abstract class BaseEngineImpl implements BookEngine {
     }
 
     /**
+     * 删除contentElement中的所有子节点
+     * @param contentElement
+     * @return
+     */
+    protected Element cleanContentElement(@NonNull Element contentElement){
+        Elements childrens = contentElement.children();
+        if(childrens != null && childrens.size() > 0){
+            for(Element e : childrens){
+                if(!e.nodeName().equals("br")){
+                    e.remove();
+                }
+            }
+        }
+        return contentElement;
+    }
+
+    /**
      * 从获得的包含各种html标签的内容中获得格式化好的内容
      * @param rawContent
      * @return
@@ -44,7 +66,7 @@ public abstract class BaseEngineImpl implements BookEngine {
     protected String getContentFromHtml(String rawContent){
         rawContent = rawContent.replaceAll("<br>" , "");
         rawContent = rawContent.replaceAll("&nbsp;" , "");
-        rawContent = rawContent.replaceAll("<.*>.*</[\\w-\\W-]*>", "");
+//        rawContent = rawContent.replaceAll("<.*>.*</[\\w-\\W-]*>", "");
         return rawContent;
     }
 
