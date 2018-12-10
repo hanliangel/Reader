@@ -26,6 +26,10 @@
         </activity>
         <activity android:name=".bookdetail.BookDetailActivity" />
         <activity android:name=".read.ReadActivity"></activity>
+
+
+        <service android:name=".service.KeepLiveService" />
+        <service android:name=".service.KeepLiveInnerService" />
     </application>
 
 </manifest>

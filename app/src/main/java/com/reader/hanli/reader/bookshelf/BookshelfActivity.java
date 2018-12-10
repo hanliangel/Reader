@@ -1,13 +1,17 @@
 package com.reader.hanli.reader.bookshelf;
 
+import android.content.ComponentName;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.blankj.utilcode.util.FragmentUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.reader.hanli.baselibrary.base.BaseActivity;
 import com.reader.hanli.reader.R;
+import com.reader.hanli.reader.service.KeepLiveService;
 
 public class BookshelfActivity extends BaseActivity {
 
@@ -27,5 +31,14 @@ public class BookshelfActivity extends BaseActivity {
         }
 
         mBookshelfPresenter = new BookshelfPresenter(mBookshelfFragment);
+
+        startKeepLiveService();
+    }
+
+    /**
+     * 启动保活服务
+     */
+    private void startKeepLiveService(){
+        startService(new Intent(this, KeepLiveService.class));
     }
 }
