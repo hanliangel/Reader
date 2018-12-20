@@ -38,7 +38,6 @@ import in.srain.cube.views.ptr.PtrHandler;
 /**
  * Created by hanli on 2018/2/9.
  */
-
 public class BookshelfFragment extends BaseFragment implements BookshelfContract.View {
 
     @BindView(R2.id.tool_bar)
@@ -78,22 +77,13 @@ public class BookshelfFragment extends BaseFragment implements BookshelfContract
                     case R.id.action_search:
                         SearchActivity.startSearchActivity(mActivity);
                         break;
+                    default:
+                        break;
                 }
                 return false;
             }
         });
 
-//        ptr.setPtrHandler(new PtrHandler() {
-//            @Override
-//            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-//                return PtrDefaultHandler.checkContentCanBePulledDown(frame , content , header);
-//            }
-//
-//            @Override
-//            public void onRefreshBegin(PtrFrameLayout frame) {
-//                mPresenter.refreshBookshelf();
-//            }
-//        });
         return view;
     }
 
@@ -116,7 +106,6 @@ public class BookshelfFragment extends BaseFragment implements BookshelfContract
 
     @Override
     public void refreshComplete() {
-//        ptr.refreshComplete();
         if(mAdapter != null){
             mAdapter.notifyDataSetChanged();
         }
@@ -152,18 +141,6 @@ public class BookshelfFragment extends BaseFragment implements BookshelfContract
                 // add to menu
                 menu.addMenuItem(openItem);
 
-//                // create "delete" item
-//                SwipeMenuItem deleteItem = new SwipeMenuItem(
-//                        getContext());
-//                // set item background
-//                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-//                        0x3F, 0x25)));
-//                // set item width
-//                deleteItem.setWidth(ConvertUtils.dp2px(90));
-//                // set a icon
-//                deleteItem.setIcon(R.drawable.ic_launcher_background);
-//                // add to menu
-//                menu.addMenuItem(deleteItem);
             }
         };
 
