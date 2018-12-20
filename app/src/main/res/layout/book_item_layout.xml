@@ -31,7 +31,7 @@
         app:layout_constraintTop_toTopOf="@+id/iv_book_cover" />
 
     <TextView
-        android:id="@+id/tv_description"
+        android:id="@+id/tv_unread_num"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
@@ -40,7 +40,7 @@
         android:layout_marginTop="4dp"
         android:maxLines="3"
         android:paddingRight="16dp"
-        android:text="书籍描述"
+        android:text="未读章节数目"
         android:textSize="@dimen/book_item_desc_text_size"
         app:layout_constraintBottom_toTopOf="@+id/tv_author"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,25 +50,39 @@
 
     <TextView
         android:id="@+id/tv_author"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="15dp"
         android:layout_marginBottom="4dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
         android:text="作者"
         android:textColor="@android:color/holo_blue_dark"
         android:textSize="@dimen/book_item_author_text_size"
-        app:layout_constraintBottom_toTopOf="@+id/tv_engine_alias"
-        app:layout_constraintStart_toEndOf="@+id/iv_book_cover" />
+        app:layout_constraintBottom_toBottomOf="@+id/iv_book_cover"
+        app:layout_constraintEnd_toStartOf="@+id/tv_engine_alias"
+        app:layout_constraintStart_toStartOf="@+id/tv_unread_num" />
 
     <TextView
         android:id="@+id/tv_engine_alias"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="8dp"
         android:text="站点"
         android:textColor="@android:color/darker_gray"
         android:textSize="@dimen/book_item_author_text_size"
         app:layout_constraintBottom_toBottomOf="@+id/iv_book_cover"
-        app:layout_constraintStart_toEndOf="@+id/iv_book_cover" />
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_newest_chapter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text="最新章节"
+        android:textSize="@dimen/book_item_desc_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_unread_num" />
 
 </android.support.constraint.ConstraintLayout>

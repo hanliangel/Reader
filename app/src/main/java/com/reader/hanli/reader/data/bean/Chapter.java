@@ -27,7 +27,7 @@ public class Chapter implements Serializable {
     private String content;
 
     /**
-     * 他所属的书本的id，暂时没用
+     * 他所属的书本的id
      */
     private Long bookId;
 

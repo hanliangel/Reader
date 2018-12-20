@@ -12,6 +12,7 @@ import com.reader.hanli.baselibrary.base.BaseHolder;
 import com.reader.hanli.reader.R;
 import com.reader.hanli.reader.R2;
 import com.reader.hanli.reader.data.bean.Book;
+import com.reader.hanli.reader.data.bean.Chapter;
 import com.reader.hanli.reader.data.engine.EngineHelper;
 
 import java.util.List;
@@ -34,7 +35,20 @@ public class BookListAdapter extends BaseAdapter<Book, BookListAdapter.Holder> {
     protected void onBindHolder(Holder holder, int position) {
         Book book = getItemBean(position);
         holder.tv_name.setText(book.getName());
-        holder.tv_description.setText(book.getDescription());
+
+        int unreadNum = book.getUnreadChapterNum();
+        switch (unreadNum){
+            case -1 :
+                holder.tv_unread_num.setText(mContext.getString(R.string.book_unread_not_start));
+                break;
+            case 0 :
+                holder.tv_unread_num.setText(mContext.getString(R.string.book_unread_read_end));
+                break;
+            default:
+                holder.tv_unread_num.setText(String.format(mContext.getString(R.string.book_unread_num), unreadNum + ""));
+                break;
+        }
+        holder.tv_newest_chapter.setText(mContext.getString(R.string.book_newest_chapter_tip) + (book.getNewestChapter() == null ? "" : book.getNewestChapter().getName()));
         holder.tv_author.setText(book.getAuthor());
         holder.tv_alias.setText(EngineHelper.getInstance().getBookEngine(book.getEngineName()).getEngineAlias());
         Glide.with(mContext)
@@ -56,8 +70,11 @@ public class BookListAdapter extends BaseAdapter<Book, BookListAdapter.Holder> {
         @BindView(R2.id.tv_name)
         TextView tv_name;
 
-        @BindView(R2.id.tv_description)
-        TextView tv_description;
+        @BindView(R2.id.tv_unread_num)
+        TextView tv_unread_num;
+
+        @BindView(R2.id.tv_newest_chapter)
+        TextView tv_newest_chapter;
 
         @BindView(R2.id.tv_author)
         TextView tv_author;

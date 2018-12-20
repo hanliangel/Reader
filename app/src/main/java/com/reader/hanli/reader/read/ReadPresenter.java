@@ -96,7 +96,7 @@ public class ReadPresenter implements ReadContract.Presenter {
             public void onNext(Chapter chapter) {
                 mCurrentChapterId = finalChapterId;
                 if(isCollectedBook){
-                    mBook.setReadingChapter(chapter);
+                    mBook.setReadingChapterUrl(chapter.getChapterUrl());
                     MyApplication.getInstance().getDaoSession().getBookDao().update(mBook);
                 }
                 mView.showContent(chapter.getContent());

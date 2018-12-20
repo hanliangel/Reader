@@ -17,7 +17,7 @@ import org.greenrobot.greendao.DaoException;
  * Created by hanli on 2018/2/11.
  */
 @Entity
-public class Book implements Serializable{
+public class Book implements Serializable , BookOperator{
 
     private static final long serialVersionUID = 1;
 
@@ -72,6 +72,19 @@ public class Book implements Serializable{
     private String readingChapterUrl;
 
     /**
+     * 最新章节的url，给greenDao用，作为外键关联
+     */
+    private String newestChapterUrl;
+
+    /**
+     * 章节数量
+     */
+    private Integer chaptersNum;
+
+    @ToOne(joinProperty = "newestChapterUrl")
+    private Chapter newestChapter;
+
+    /**
      * 当前正在读读章节
      */
     @ToOne(joinProperty = "readingChapterUrl")
@@ -91,10 +104,13 @@ public class Book implements Serializable{
     @Generated(hash = 993621563)
     private transient String readingChapter__resolvedKey;
 
-    @Generated(hash = 1045407155)
+    @Generated(hash = 1770430648)
+    private transient String newestChapter__resolvedKey;
+
+    @Generated(hash = 761808995)
     public Book(Long bookId, String coverUri, String name, String description, String author,
             String latestTime, String latestChapter, String engineName, String bookUrl,
-            String readingChapterUrl) {
+            String readingChapterUrl, String newestChapterUrl, Integer chaptersNum) {
         this.bookId = bookId;
         this.coverUri = coverUri;
         this.name = name;
@@ -105,6 +121,8 @@ public class Book implements Serializable{
         this.engineName = engineName;
         this.bookUrl = bookUrl;
         this.readingChapterUrl = readingChapterUrl;
+        this.newestChapterUrl = newestChapterUrl;
+        this.chaptersNum = chaptersNum;
     }
 
     @Keep
@@ -144,6 +162,20 @@ public class Book implements Serializable{
         this.author = author;
     }
 
+    @Keep
+    @Override
+    public int getUnreadChapterNum(){
+        if(chaptersNum == null || chaptersNum == 0){
+            return -1;
+        }
+        int unreadNum = chaptersNum;
+        if(getReadingChapter() != null){
+            int chapterIndex = readingChapter.getId();
+            unreadNum = chaptersNum - 1 - chapterIndex;
+        }
+        return unreadNum;
+    }
+
     /**
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
@@ -169,6 +201,10 @@ public class Book implements Serializable{
     @Keep
     public void setChapters(List<Chapter> chapters) {
         this.chapters = chapters;
+        setChaptersNum(chapters == null ? 0 : chapters.size());
+        if(chapters != null && !chapters.isEmpty()){
+            setNewestChapterUrl(chapters.get(chapters.size() - 1).getChapterUrl());
+        }
     }
 
     public String getLatestTime() {
@@ -302,6 +338,55 @@ public class Book implements Serializable{
 
     public void setReadingChapterUrl(String readingChapterUrl) {
         this.readingChapterUrl = readingChapterUrl;
+    }
+
+    public int getChaptersNum() {
+        return this.chaptersNum;
+    }
+
+    public void setChaptersNum(int chaptersNum) {
+        this.chaptersNum = chaptersNum;
+    }
+
+    public void setChaptersNum(Integer chaptersNum) {
+        this.chaptersNum = chaptersNum;
+    }
+
+    /** called by internal mechanisms, do not call yourself. */
+    @Generated(hash = 579844853)
+    public void setNewestChapter(Chapter newestChapter) {
+        synchronized (this) {
+            this.newestChapter = newestChapter;
+            newestChapterUrl = newestChapter == null ? null : newestChapter.getChapterUrl();
+            newestChapter__resolvedKey = newestChapterUrl;
+        }
+    }
+
+    public String getNewestChapterUrl() {
+        return this.newestChapterUrl;
+    }
+
+    public void setNewestChapterUrl(String newestChapterUrl) {
+        this.newestChapterUrl = newestChapterUrl;
+    }
+
+    /** To-one relationship, resolved on first access. */
+    @Generated(hash = 780224252)
+    public Chapter getNewestChapter() {
+        String __key = this.newestChapterUrl;
+        if (newestChapter__resolvedKey == null || newestChapter__resolvedKey != __key) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            ChapterDao targetDao = daoSession.getChapterDao();
+            Chapter newestChapterNew = targetDao.load(__key);
+            synchronized (this) {
+                newestChapter = newestChapterNew;
+                newestChapter__resolvedKey = __key;
+            }
+        }
+        return newestChapter;
     }
 
     /** called by internal mechanisms, do not call yourself. */
