@@ -16,8 +16,8 @@ import java.util.List;
 
 /**
  * Created by hanli on 2018/5/22.
+ * 网站：https://www.bequgezw.com/
  */
-
 public class BequgeEngineImpl extends BaseEngineImpl {
 
 
@@ -32,58 +32,49 @@ public class BequgeEngineImpl extends BaseEngineImpl {
         search = EncodeUtils.urlDecode(search);
         try {
             Document document = getDocument(getSearchUrl() + search);
-            Elements result_list = document.getElementsByClass("result-list");
+            Elements result_list = document.select("#main").select("div.novelslist2").select("ul").select("li");
             if(ObjectUtils.isEmpty(result_list)){
                 return list;
             }
-            for(Element element : result_list.get(0).children()){
+            for(Element element : result_list){
                 Book book = new Book();
                 // 添加封面
-                Elements pic_elements = element.getElementsByClass("result-game-item-pic-link-img");
-                if(ObjectUtils.isNotEmpty(pic_elements)){
-                    String picUrl = pic_elements.get(0).attr("src");
-                    book.setCoverUri(picUrl);
-                }
+                // 无封面 暂不添加
 
                 // 添加书名
-                Elements title_elements = element.getElementsByAttributeValue("cpos", "title");
+                Elements title_elements = element.select("span.s2").select("a");
                 if(ObjectUtils.isNotEmpty(title_elements)){
-                    String title = title_elements.get(0).attr("title");
-                    String href = title_elements.get(0).attr("href");
+                    String title = title_elements.get(0).text();
+                    String href = title_elements.get(0).attr("abs:href");
                     book.setName(title);
                     book.setBookUrl(href);
                     book.setEngineName(getEngineName());
+                } else {
+                    continue;
                 }
 
                 // 添加描述
-                Elements desc_elements = element.getElementsByClass("result-game-item-desc");
-                if(ObjectUtils.isNotEmpty(desc_elements)){
-                    String desc = desc_elements.get(0).text();
-                    book.setDescription(desc);
-                }
+                // 暂无描述
 
                 // 添加作者
-                Elements info_elements = element.getElementsByClass("result-game-item-info-tag");
-                for(int i = 0 ; i < info_elements.size() ; i ++){
-                    String info = info_elements.get(i).child(1).text().trim();
-                    switch (i){
-                        case 0:
-                            // 作者
-                            book.setAuthor(info);
-                            break;
-                        case 1:
-                            // 类型
-                            break;
-                        case 2:
-                            // 更新时间
-                            book.setLatestTime(info);
-                            break;
-                        case 3:
-                            // 最新章节
-                            book.setLatestChapter(info);
-                            break;
-                    }
+                Elements author_elements = element.select("span.s4");
+                if(ObjectUtils.isNotEmpty(author_elements)){
+                    book.setAuthor(author_elements.get(0).text());
                 }
+
+                // 更新时间
+                Elements updatetime_elements = element.select("span.s6");
+                if(ObjectUtils.isNotEmpty(updatetime_elements)){
+                    book.setLatestTime(updatetime_elements.get(0).text());
+                }
+
+
+                // 最新章节
+                Elements lastchapter_elements = element.select("span.s3").select("a");
+                if(ObjectUtils.isNotEmpty(lastchapter_elements)){
+                    book.setLatestChapter(lastchapter_elements.get(0).attr("title"));
+                }
+
                 list.add(book);
             }
 
@@ -152,7 +143,7 @@ public class BequgeEngineImpl extends BaseEngineImpl {
 
     @Override
     public String getSearchUrl() {
-        return "http://zhannei.baidu.com/cse/search?s=17595686867322250167&q=";
+        return "https://www.bequgezw.com/search.html?name=";
     }
 
     @Override

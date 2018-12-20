@@ -19,8 +19,8 @@ import java.util.List;
 
 /**
  * Created by hanli on 2018/2/11.
+ * 网站：http://www.qu.la
  */
-
 public class BiqugeEngineImpl extends BaseEngineImpl {
 
     private static int RETRY_MAX_NUM = 3;

@@ -21,6 +21,8 @@ public class Book implements Serializable{
 
     private static final long serialVersionUID = 1;
 
+    public static final String DEFAULT_COVER = "http://www.jindianim.com/uploads/pictureDefaultD.jpg";
+
     @Id(autoincrement = true)
     private Long bookId;
 
@@ -105,8 +107,9 @@ public class Book implements Serializable{
         this.readingChapterUrl = readingChapterUrl;
     }
 
-    @Generated(hash = 1839243756)
+    @Keep
     public Book() {
+        coverUri = DEFAULT_COVER;
     }
 
     public String getCoverUri() {
