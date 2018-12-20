@@ -87,6 +87,7 @@ public class BookDetailPresenter implements BookDetailContract.Presenter {
 
             @Override
             public void onNext(Book book) {
+                mBook = book;
                 if(isCollect()){
                     List<Chapter> chapters = book.getChapters();
                     if(ObjectUtils.isNotEmpty(chapters)){
